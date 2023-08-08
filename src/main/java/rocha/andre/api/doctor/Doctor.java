@@ -24,5 +24,13 @@ public class Doctor {
 
     //nao cria relação, na table de doctor ficará salva a classe address
     @Embedded
-    private Address Address;
+    private Address address;
+
+    public Doctor (DataDoctor data) {
+        this.name = data.name();
+        this.email = data.email();
+        this.crm = data.crm();
+        this.specialty = data.specialty();
+        this.address = new Address(data.address());
+    }
 }
