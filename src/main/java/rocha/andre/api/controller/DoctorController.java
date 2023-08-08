@@ -1,6 +1,7 @@
 package rocha.andre.api.controller;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import rocha.andre.api.doctor.DataDoctor;
@@ -23,7 +24,7 @@ public class DoctorController {
 
     @PostMapping
     @Transactional
-    public void createDoctor(@RequestBody DataDoctor data) {
+    public void createDoctor(@RequestBody @Valid DataDoctor data) {
         repository.save(new Doctor(data));
     }
 }
