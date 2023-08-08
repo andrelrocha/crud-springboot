@@ -14,6 +14,8 @@ public record DataDoctor(
         @Email
         String email,
         @NotBlank
+        String telephone,
+        @NotBlank
         @Pattern(regexp = "\\d{4,6}")
         String crm,
         @NotNull //não é string, mas enum, logo não é notBlank
