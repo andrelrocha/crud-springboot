@@ -16,6 +16,6 @@ public class DeleteDoctorUseCase {
         Doctor doctorToDelete = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Doctor with the provided ID does not exist."));
 
-        repository.delete(doctorToDelete);
+        doctorToDelete.exclude();
     }
 }

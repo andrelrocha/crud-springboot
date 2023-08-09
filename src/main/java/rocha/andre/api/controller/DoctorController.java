@@ -49,6 +49,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}")
+    @org.springframework.transaction.annotation.Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDoctor(@PathVariable Long id) {
         deleteDoctorUseCase.deleteDoctor(id);
