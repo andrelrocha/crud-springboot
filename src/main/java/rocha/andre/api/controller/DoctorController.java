@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rocha.andre.api.doctor.DataDoctor;
 import rocha.andre.api.doctor.DataListDoctor;
@@ -35,14 +36,16 @@ public class DoctorController {
 
     @PostMapping
     @Transactional
-    public void createDoctor(@RequestBody @Valid DataDoctor data) {
+    public ResponseEntity<String> createDoctor(@RequestBody @Valid DataDoctor data) {
         createDoctorUseCase.createDoctor(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Doctor with the name " + data.name() + " created");
     }
 
     @PutMapping
     @Transactional
-    public void updateDoctor(@RequestBody @Valid DataUpdateDoctor data) {
+    public ResponseEntity<String> updateDoctor(@RequestBody @Valid DataUpdateDoctor data) {
         updateDoctorUseCase.updateDoctor(data);
+        return ResponseEntity.ok("Doctor with id " + data.id() + " successfully updated");
     }
 
     @DeleteMapping("/{id}")
