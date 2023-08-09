@@ -1,6 +1,9 @@
-package rocha.andre.api.doctor;
+package rocha.andre.api.doctor.UseCase;
 
 import org.springframework.stereotype.Component;
+import rocha.andre.api.doctor.DataDoctor;
+import rocha.andre.api.doctor.Doctor;
+import rocha.andre.api.doctor.DoctorRepository;
 
 @Component
 public class CreateDoctorUseCase {

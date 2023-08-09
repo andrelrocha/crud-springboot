@@ -5,9 +5,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import rocha.andre.api.doctor.DataDoctor;
+import rocha.andre.api.doctor.DataListDoctor;
 import rocha.andre.api.doctor.Doctor;
 import rocha.andre.api.doctor.DoctorRepository;
-import rocha.andre.api.doctor.CreateDoctorUseCase;
+import rocha.andre.api.doctor.UseCase.CreateDoctorUseCase;
+import rocha.andre.api.doctor.UseCase.ListDoctorUseCase;
 
 import java.util.List;
 
@@ -20,10 +22,12 @@ public class DoctorController {
 
     @Autowired
     private CreateDoctorUseCase createDoctorUseCase;
+    @Autowired
+    private ListDoctorUseCase listDoctorUseCase;
 
     @GetMapping
-    public List<Doctor> getAllDoctors() {
-        return repository.findAll();
+    public List<DataListDoctor> getAllDoctors() {
+        return listDoctorUseCase.listDoctor();
     }
 
     @PostMapping
