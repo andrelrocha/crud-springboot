@@ -15,10 +15,15 @@ public class ListDoctorUseCase {
     }
 
     public Page<DataListDoctor> listDoctor(Pageable pagination) {
-        // O método map() é uma operação do Stream que permite transformar cada elemento da sequência
-        // em outro objeto usando uma função de mapeamento.
-        //return repository.findAll(pagination).stream().map(DataListDoctor::new).toList();
+        try {
+            // O método map() é uma operação do Stream que permite transformar cada elemento da sequência
+            // em outro objeto usando uma função de mapeamento.
+            //return repository.findAll(pagination).stream().map(DataListDoctor::new).toList();
 
-        return repository.findAllByActiveTrue(pagination).map(DataListDoctor::new);
+            return repository.findAllByActiveTrue(pagination).map(DataListDoctor::new);
+        } catch (Exception e) {
+            // Handle the exception here
+            throw new RuntimeException("Something went wrong while listing doctors");
+        }
     }
 }

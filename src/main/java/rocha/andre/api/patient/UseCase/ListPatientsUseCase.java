@@ -15,8 +15,11 @@ public class ListPatientsUseCase {
     }
 
     public Page<PatientListingData> listDoctor(Pageable pagination) {
-
-        return repository.findAllByActiveTrue(pagination).map(PatientListingData::new);
+        try {
+            return repository.findAllByActiveTrue(pagination).map(PatientListingData::new);
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong while listing patients");
+        }
     }
 }
 

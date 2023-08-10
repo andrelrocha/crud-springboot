@@ -13,9 +13,13 @@ public class DeleteDoctorUseCase {
     }
 
     public void deleteDoctor(Long id) {
-        Doctor doctorToDelete = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Doctor with the provided ID does not exist."));
+        try {
+            Doctor doctorToDelete = repository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Doctor with the provided ID does not exist."));
 
-        doctorToDelete.exclude();
+            doctorToDelete.exclude();
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong while deleting a doctor");
+        }
     }
 }

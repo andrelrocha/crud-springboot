@@ -15,11 +15,15 @@ public class UpdatePatientUseCase {
     }
 
     public Patient updatePatient(PatientUpdateData data, Long id) {
-        Patient patientToUpdate = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Patient with the provided ID does not exist."));
+        try {
+            Patient patientToUpdate = repository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Patient with the provided ID does not exist."));
 
-        patientToUpdate.updateInformation(data);
+            patientToUpdate.updateInformation(data);
 
-        return patientToUpdate;
+            return patientToUpdate;
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong while updating a patient");
+        }
     }
 }

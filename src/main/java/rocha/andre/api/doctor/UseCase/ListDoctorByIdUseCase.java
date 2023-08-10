@@ -14,9 +14,13 @@ public class ListDoctorByIdUseCase {
     }
 
     public Doctor listDoctorById (Long id) {
-        Doctor doctorById = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Doctor with id" + id + "not found in our database"));
+        try {
+            Doctor doctorById = repository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Doctor with id " + id + " not found in our database"));
 
-        return doctorById;
+            return doctorById;
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong while listing a doctor by ID");
+        }
     }
 }

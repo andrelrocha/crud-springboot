@@ -14,14 +14,18 @@ public class CreateDoctorUseCase {
     }
 
     public Doctor createDoctor(DataDoctor data) {
-        boolean doctorExists = repository.existsByEmail(data.email());
+        try {
+            boolean doctorExists = repository.existsByEmail(data.email());
 
-        if (!doctorExists) {
-            Doctor newDoctor = new Doctor(data);
-            repository.save(newDoctor);
-            return newDoctor;
-        } else {
-            throw new IllegalArgumentException("Doctor with the same email already exists.");
+            if (!doctorExists) {
+                Doctor newDoctor = new Doctor(data);
+                repository.save(newDoctor);
+                return newDoctor;
+            } else {
+                throw new IllegalArgumentException("Doctor with the same email already exists.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong while creating a doctor");
         }
     }
 }
