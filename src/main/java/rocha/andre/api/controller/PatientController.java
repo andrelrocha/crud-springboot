@@ -25,6 +25,8 @@ public class PatientController {
     @Autowired
     private CreatePatientUseCase createPatientUseCase;
     @Autowired
+    private DeletePatientUseCase deletePatientUseCase;
+    @Autowired
     private ListPatientsUseCase listPatientsUseCase;
     @Autowired
     private ListPatientByIdUseCase listPatientByIdUseCase;
@@ -56,5 +58,12 @@ public class PatientController {
     public ResponseEntity<Patient> updatePatient(@RequestBody @Valid PatientUpdateData data, @PathVariable Long id) {
         Patient updatedPatient = updatePatientUseCase.updatePatient(data, id);
         return ResponseEntity.ok(updatedPatient);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deletePatient(@PathVariable Long id) {
+        deletePatientUseCase.deletePatient(id);
+        return ResponseEntity.noContent().build();
     }
 }
