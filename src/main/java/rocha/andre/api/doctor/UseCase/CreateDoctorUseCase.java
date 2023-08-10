@@ -13,11 +13,13 @@ public class CreateDoctorUseCase {
         this.repository = repository;
     }
 
-    public void createDoctor(DataDoctor data) {
+    public Doctor createDoctor(DataDoctor data) {
         boolean doctorExists = repository.existsByEmail(data.email());
 
         if (!doctorExists) {
-            repository.save(new Doctor(data));
+            Doctor newDoctor = new Doctor(data);
+            repository.save(newDoctor);
+            return newDoctor;
         } else {
             throw new IllegalArgumentException("Doctor with the same email already exists.");
         }

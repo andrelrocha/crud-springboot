@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 import rocha.andre.api.doctor.*;
 import rocha.andre.api.doctor.UseCase.*;
 
@@ -39,9 +40,10 @@ public class DoctorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> createDoctor(@RequestBody @Valid DataDoctor data) {
-        createDoctorUseCase.createDoctor(data);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Doctor with the name " + data.name() + " created");
+    public ResponseEntity<Doctor> createDoctor(@RequestBody @Valid DataDoctor data, UriComponentsBuilder uriBuilder) {
+        Doctor newDoctor = createDoctorUseCase.createDoctor(data);
+        var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(newDoctor.getId()).toUri();
+        return ResponseEntity.created(uri).body(newDoctor);
     }
 
     @PutMapping
