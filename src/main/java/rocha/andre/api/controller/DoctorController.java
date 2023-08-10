@@ -1,6 +1,5 @@
 package rocha.andre.api.controller;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,13 +8,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rocha.andre.api.doctor.DataDoctor;
-import rocha.andre.api.doctor.DataListDoctor;
-import rocha.andre.api.doctor.DataUpdateDoctor;
-import rocha.andre.api.doctor.UseCase.CreateDoctorUseCase;
-import rocha.andre.api.doctor.UseCase.DeleteDoctorUseCase;
-import rocha.andre.api.doctor.UseCase.ListDoctorUseCase;
-import rocha.andre.api.doctor.UseCase.UpdateDoctorUseCase;
+import org.springframework.transaction.annotation.Transactional;
+import rocha.andre.api.doctor.*;
+import rocha.andre.api.doctor.UseCase.*;
 
 @RestController
 @RequestMapping("/doctors")
@@ -27,11 +22,19 @@ public class DoctorController {
     @Autowired
     private ListDoctorUseCase listDoctorUseCase;
     @Autowired
+    private ListDoctorByIdUseCase listDoctorByIdUseCase;
+    @Autowired
     private UpdateDoctorUseCase updateDoctorUseCase;
 
     @GetMapping
-    public Page<DataListDoctor> getAllDoctors(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
-        return listDoctorUseCase.listDoctor(pagination);
+    public ResponseEntity<Page<DataListDoctor>> getAllDoctors(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
+        Page<DataListDoctor> page = listDoctorUseCase.listDoctor(pagination);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{id}")
+    public Doctor getDoctorById(@PathVariable Long id) {
+        return listDoctorByIdUseCase.listDoctorById(id);
     }
 
     @PostMapping
@@ -43,15 +46,15 @@ public class DoctorController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<String> updateDoctor(@RequestBody @Valid DataUpdateDoctor data) {
-        updateDoctorUseCase.updateDoctor(data);
-        return ResponseEntity.ok("Doctor with id " + data.id() + " successfully updated");
+    public ResponseEntity<Doctor> updateDoctor(@RequestBody @Valid DataUpdateDoctor data) {
+        Doctor updatedDoctor = updateDoctorUseCase.updateDoctor(data);
+        return ResponseEntity.ok(updatedDoctor);
     }
 
     @DeleteMapping("/{id}")
-    @org.springframework.transaction.annotation.Transactional
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDoctor(@PathVariable Long id) {
+    @Transactional
+    public ResponseEntity deleteDoctor(@PathVariable Long id) {
         deleteDoctorUseCase.deleteDoctor(id);
+        return ResponseEntity.noContent().build();
     }
 }

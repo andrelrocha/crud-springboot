@@ -13,10 +13,12 @@ public class UpdateDoctorUseCase {
         this.repository = repository;
     }
 
-    public void updateDoctor(DataUpdateDoctor data) {
+    public Doctor updateDoctor(DataUpdateDoctor data) {
         Doctor doctorToUpdate = repository.findById(data.id())
                 .orElseThrow(() -> new IllegalArgumentException("Doctor with the provided ID does not exist."));
 
         doctorToUpdate.updateData(data);
+
+        return doctorToUpdate;
     }
 }

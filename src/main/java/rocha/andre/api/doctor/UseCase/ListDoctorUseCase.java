@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import rocha.andre.api.doctor.DataListDoctor;
 import rocha.andre.api.doctor.DoctorRepository;
 
-import java.util.List;
-
 @Component
 public class ListDoctorUseCase {
     private DoctorRepository repository;
@@ -21,6 +19,6 @@ public class ListDoctorUseCase {
         // em outro objeto usando uma função de mapeamento.
         //return repository.findAll(pagination).stream().map(DataListDoctor::new).toList();
 
-        return repository.findAll(pagination).map(DataListDoctor::new);
+        return repository.findAllByActiveTrue(pagination).map(DataListDoctor::new);
     }
 }
