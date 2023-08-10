@@ -1,10 +1,9 @@
-package rocha.andre.api.patient.UseCase;
+package rocha.andre.api.domain.patient.UseCase;
 
 import org.springframework.stereotype.Component;
-import rocha.andre.api.doctor.Doctor;
-import rocha.andre.api.patient.Patient;
-import rocha.andre.api.patient.PatientRepository;
-import rocha.andre.api.patient.PatientUpdateData;
+import rocha.andre.api.domain.patient.Patient;
+import rocha.andre.api.domain.patient.PatientRepository;
+import rocha.andre.api.domain.patient.PatientUpdateData;
 
 @Component
 public class UpdatePatientUseCase {
@@ -15,15 +14,11 @@ public class UpdatePatientUseCase {
     }
 
     public Patient updatePatient(PatientUpdateData data, Long id) {
-        try {
             Patient patientToUpdate = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Patient with the provided ID does not exist."));
 
             patientToUpdate.updateInformation(data);
 
             return patientToUpdate;
-        } catch (Exception e) {
-            throw new RuntimeException("Something went wrong while updating a patient");
-        }
     }
 }

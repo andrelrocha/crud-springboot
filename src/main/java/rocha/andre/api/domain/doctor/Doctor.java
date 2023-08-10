@@ -1,54 +1,59 @@
-package rocha.andre.api.patient;
+package rocha.andre.api.domain.doctor;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import rocha.andre.api.address.Address;
+import lombok.*;
 
-@Table(name = "patients")
-@Entity(name = "Patient")
+import rocha.andre.api.domain.address.*;
+
+@Table(name = "doctors")
+@Entity(name = "Doctor")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Patient {
+public class Doctor {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
     private String telephone;
-    private String cpf;
+    private String crm;
 
+    @Enumerated(EnumType.STRING)
+    private Specialty specialty;
+
+    //nao cria relação, na table de doctor ficará salva a classe address
     @Embedded
     private Address address;
 
     private Boolean active;
 
-    public Patient(PatientRegistrationData data) {
-        this.active = true;
+    public Doctor (DataDoctor data) {
         this.name = data.name();
         this.email = data.email();
         this.telephone = data.telephone();
-        this.cpf = data.cpf();
+        this.crm = data.crm();
+        this.specialty = data.specialty();
         this.address = new Address(data.address());
+        this.active = true;
     }
 
-    public void updateInformation(PatientUpdateData data) {
+    public void updateData(DataUpdateDoctor data) {
         if (data.name() != null) {
             this.name = data.name();
         }
+
         if (data.telephone() != null) {
             this.telephone = data.telephone();
         }
+
         if (data.address() != null) {
             this.address.updateData(data.address());
         }
     }
 
-    public void deactivate() {
+    public void exclude() {
         this.active = false;
     }
 }

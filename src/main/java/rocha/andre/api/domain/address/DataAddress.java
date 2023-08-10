@@ -1,4 +1,4 @@
-package rocha.andre.api.address;
+package rocha.andre.api.domain.address;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

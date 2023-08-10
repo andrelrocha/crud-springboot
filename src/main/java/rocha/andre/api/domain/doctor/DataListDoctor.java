@@ -1,4 +1,4 @@
-package rocha.andre.api.doctor;
+package rocha.andre.api.domain.doctor;
 
 public record DataListDoctor(Long id, String name, String email, String crm, Specialty specialty) {
     public DataListDoctor(Doctor doctor) {

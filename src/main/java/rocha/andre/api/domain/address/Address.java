@@ -1,4 +1,4 @@
-package rocha.andre.api.address;
+package rocha.andre.api.domain.address;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

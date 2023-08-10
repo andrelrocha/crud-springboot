@@ -1,13 +1,10 @@
-package rocha.andre.api.doctor;
+package rocha.andre.api.domain.patient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
-public interface DoctorRepository extends JpaRepository<Doctor, Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
     boolean existsByEmail(String email);
-
-    Page<Doctor> findAllByActiveTrue(Pageable pagination);
+    Page<Patient> findAllByActiveTrue(Pageable pagination);
 }

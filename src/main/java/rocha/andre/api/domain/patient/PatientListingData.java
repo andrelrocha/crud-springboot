@@ -1,4 +1,4 @@
-package rocha.andre.api.patient;
+package rocha.andre.api.domain.patient;
 
 public record PatientListingData(Long id, String name, String email, String cpf) {
 

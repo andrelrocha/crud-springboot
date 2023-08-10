@@ -1,8 +1,7 @@
-package rocha.andre.api.doctor;
+package rocha.andre.api.domain.doctor;
 
 import jakarta.validation.constraints.NotNull;
-import rocha.andre.api.address.Address;
-import rocha.andre.api.address.DataAddress;
+import rocha.andre.api.domain.address.DataAddress;
 
 public record DataUpdateDoctor(
         @NotNull

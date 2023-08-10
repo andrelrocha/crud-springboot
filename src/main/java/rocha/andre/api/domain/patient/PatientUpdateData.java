@@ -1,6 +1,6 @@
-package rocha.andre.api.patient;
+package rocha.andre.api.domain.patient;
 
-import rocha.andre.api.address.DataAddress;
+import rocha.andre.api.domain.address.DataAddress;
 
 public record PatientUpdateData(
         String name,

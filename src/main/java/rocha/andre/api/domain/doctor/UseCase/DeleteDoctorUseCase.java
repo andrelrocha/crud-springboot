@@ -1,8 +1,8 @@
-package rocha.andre.api.doctor.UseCase;
+package rocha.andre.api.domain.doctor.UseCase;
 
 import org.springframework.stereotype.Component;
-import rocha.andre.api.doctor.Doctor;
-import rocha.andre.api.doctor.DoctorRepository;
+import rocha.andre.api.domain.doctor.Doctor;
+import rocha.andre.api.domain.doctor.DoctorRepository;
 
 @Component
 public class DeleteDoctorUseCase {
@@ -13,13 +13,10 @@ public class DeleteDoctorUseCase {
     }
 
     public void deleteDoctor(Long id) {
-        try {
+
             Doctor doctorToDelete = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Doctor with the provided ID does not exist."));
 
             doctorToDelete.exclude();
-        } catch (Exception e) {
-            throw new RuntimeException("Something went wrong while deleting a doctor");
-        }
     }
 }

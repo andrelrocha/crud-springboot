@@ -1,9 +1,9 @@
-package rocha.andre.api.doctor.UseCase;
+package rocha.andre.api.domain.doctor.UseCase;
 
 import org.springframework.stereotype.Component;
-import rocha.andre.api.doctor.DataDoctor;
-import rocha.andre.api.doctor.Doctor;
-import rocha.andre.api.doctor.DoctorRepository;
+import rocha.andre.api.domain.doctor.DataDoctor;
+import rocha.andre.api.domain.doctor.Doctor;
+import rocha.andre.api.domain.doctor.DoctorRepository;
 
 @Component
 public class CreateDoctorUseCase {
@@ -14,7 +14,6 @@ public class CreateDoctorUseCase {
     }
 
     public Doctor createDoctor(DataDoctor data) {
-        try {
             boolean doctorExists = repository.existsByEmail(data.email());
 
             if (!doctorExists) {
@@ -24,8 +23,5 @@ public class CreateDoctorUseCase {
             } else {
                 throw new IllegalArgumentException("Doctor with the same email already exists.");
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Something went wrong while creating a doctor");
-        }
     }
 }

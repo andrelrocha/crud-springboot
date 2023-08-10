@@ -9,13 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
-import rocha.andre.api.doctor.DataUpdateDoctor;
-import rocha.andre.api.doctor.Doctor;
-import rocha.andre.api.patient.Patient;
-import rocha.andre.api.patient.PatientListingData;
-import rocha.andre.api.patient.PatientRegistrationData;
-import rocha.andre.api.patient.PatientUpdateData;
-import rocha.andre.api.patient.UseCase.*;
+import rocha.andre.api.domain.patient.Patient;
+import rocha.andre.api.domain.patient.PatientListingData;
+import rocha.andre.api.domain.patient.PatientRegistrationData;
+import rocha.andre.api.domain.patient.PatientUpdateData;
+import rocha.andre.api.domain.patient.UseCase.*;
 
 import java.net.URI;
 

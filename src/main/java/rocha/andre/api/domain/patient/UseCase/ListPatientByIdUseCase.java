@@ -1,8 +1,8 @@
-package rocha.andre.api.patient.UseCase;
+package rocha.andre.api.domain.patient.UseCase;
 
 import org.springframework.stereotype.Component;
-import rocha.andre.api.patient.Patient;
-import rocha.andre.api.patient.PatientRepository;
+import rocha.andre.api.domain.patient.Patient;
+import rocha.andre.api.domain.patient.PatientRepository;
 
 @Component
 public class ListPatientByIdUseCase {
@@ -13,13 +13,9 @@ public class ListPatientByIdUseCase {
     }
 
     public Patient listPatientById (Long id) {
-        try {
             Patient patientById = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Patient with id " + id + " not found in our database"));
 
             return patientById;
-        } catch (Exception e) {
-            throw new RuntimeException("Something went wrong while retrieving a patient by ID");
-        }
     }
 }

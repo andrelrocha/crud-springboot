@@ -1,9 +1,9 @@
-package rocha.andre.api.patient.UseCase;
+package rocha.andre.api.domain.patient.UseCase;
 
 import org.springframework.stereotype.Component;
-import rocha.andre.api.patient.Patient;
-import rocha.andre.api.patient.PatientRegistrationData;
-import rocha.andre.api.patient.PatientRepository;
+import rocha.andre.api.domain.patient.Patient;
+import rocha.andre.api.domain.patient.PatientRegistrationData;
+import rocha.andre.api.domain.patient.PatientRepository;
 
 @Component
 public class CreatePatientUseCase {
@@ -14,7 +14,6 @@ public class CreatePatientUseCase {
     }
 
     public Patient createPatient(PatientRegistrationData data) {
-        try {
             boolean patientExists = repository.existsByEmail(data.email());
 
             if (!patientExists) {
@@ -24,8 +23,5 @@ public class CreatePatientUseCase {
             } else {
                 throw new IllegalArgumentException("Patient with the same email already exists.");
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Something went wrong while creating a patient");
-        }
     }
 }

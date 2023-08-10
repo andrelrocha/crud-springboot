@@ -1,4 +1,4 @@
-package rocha.andre.api.doctor;
+package rocha.andre.api.domain.doctor;
 
 public enum Specialty {
     orthopedics,
