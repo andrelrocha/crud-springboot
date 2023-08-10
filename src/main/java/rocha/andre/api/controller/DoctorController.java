@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 import rocha.andre.api.doctor.*;
 import rocha.andre.api.doctor.UseCase.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/doctors")
@@ -34,15 +35,16 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public Doctor getDoctorById(@PathVariable Long id) {
-        return listDoctorByIdUseCase.listDoctorById(id);
+    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
+        Doctor doctorById = listDoctorByIdUseCase.listDoctorById(id);
+        return ResponseEntity.ok(doctorById);
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity<Doctor> createDoctor(@RequestBody @Valid DataDoctor data, UriComponentsBuilder uriBuilder) {
         Doctor newDoctor = createDoctorUseCase.createDoctor(data);
-        var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(newDoctor.getId()).toUri();
+        URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(newDoctor.getId()).toUri();
         return ResponseEntity.created(uri).body(newDoctor);
     }
 
