@@ -23,11 +23,19 @@ public class PatientController {
     private CreatePatientUseCase createPatientUseCase;
     @Autowired
     private ListPatientsUseCase listPatientsUseCase;
+    @Autowired
+    private ListPatientByIdUseCase listPatientByIdUseCase;
 
     @GetMapping
     public ResponseEntity<Page<PatientListingData>> getAllPatients(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
         Page<PatientListingData> page = listPatientsUseCase.listDoctor(pagination);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
+        Patient patientById = listPatientByIdUseCase.listPatientById(id);
+        return ResponseEntity.ok(patientById);
     }
 
     @PostMapping
