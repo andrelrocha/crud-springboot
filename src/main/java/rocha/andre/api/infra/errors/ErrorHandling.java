@@ -1,4 +1,4 @@
-package rocha.andre.api.infra;
+package rocha.andre.api.infra.errors;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
