@@ -1,1 +1,32 @@
 em caso de migration com erro: delete from flyway_schema_history where success = 0;
+
+para criar o processo de security:
+1. criar service de autenticação
+2. criar rota de autenticação
+3. criar security configurations {
+ - definir authenticationManager
+ - definir metodo de encriptação de senha
+}
+4. implementar UserDetails no model de user
+
+
+Criar Service de Autenticação:
+Criar um serviço de autenticação é fundamental para autenticar os usuários da sua aplicação. Este serviço pode implementar
+a interface UserDetailsService do Spring Security, onde você irá buscar as informações do usuário
+(como nome de usuário, senha e papéis) a partir do seu sistema de armazenamento (banco de dados, API, etc.).
+
+Criar Rota de Autenticação:
+Definir uma rota para a autenticação é necessário para que os usuários possam enviar suas credenciais
+(nome de usuário e senha) para serem autenticados. Geralmente, isso envolve a criação de um endpoint (como /login)
+onde os usuários podem enviar uma solicitação POST com suas credenciais.
+
+Criar Configurações de Segurança:
+As configurações de segurança, definidas geralmente em uma classe de configuração do Spring, são onde você configura detalhes como:
+Definir o AuthenticationManager, que é responsável por autenticar os usuários.
+Configurar o método de encriptação de senhas (usando BCrypt, por exemplo).
+Definir as regras de autorização (quem pode acessar quais partes da aplicação).
+
+Implementar UserDetails no Modelo de User:
+Implementar a interface UserDetails no modelo de usuário é necessário para que o Spring Security possa interagir com
+os detalhes do usuário durante o processo de autenticação e autorização. A implementação da interface UserDetails
+fornece informações como nome de usuário, senha, autorizações e outras informações necessárias para o Spring Security.

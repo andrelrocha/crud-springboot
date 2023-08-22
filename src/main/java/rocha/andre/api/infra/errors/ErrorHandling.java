@@ -28,6 +28,11 @@ public class ErrorHandling {
         return ResponseEntity.badRequest().body(errors.stream().map(DataValidationError::new).toList());
     }
 
+    @ExceptionHandler(RuntimeException.class) // Handle RuntimeException
+    public ResponseEntity handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity.status(500).body("Internal Server Error: " + ex.getMessage());
+    }
+
     private record DataValidationError(String field, String message) {
         public DataValidationError(FieldError error) {
             this(error.getField(), error.getDefaultMessage());

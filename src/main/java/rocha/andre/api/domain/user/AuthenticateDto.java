@@ -1,4 +1,4 @@
-package rocha.andre.api.user;
+package rocha.andre.api.domain.user;
 
 public record AuthenticateDto(
         String login,
