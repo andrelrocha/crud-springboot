@@ -9,18 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rocha.andre.api.domain.user.AuthenticateDto;
 import rocha.andre.api.domain.user.UseCase.PerformLoginUseCase;
+import rocha.andre.api.infra.security.TokenJwtDto;
 
 @RestController
 @RequestMapping("/login")
 public class AuthenticateController {
 
     @Autowired
-    PerformLoginUseCase performLoginUseCase
+    PerformLoginUseCase performLoginUseCase;
+
 
     @PostMapping
     public ResponseEntity performLogin(@RequestBody @Valid AuthenticateDto data) {
-        performLoginUseCase.performLogin(data);
+        TokenJwtDto tokenJwt = performLoginUseCase.performLogin(data);
 
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok(tokenJwt);
     }
 }

@@ -30,3 +30,16 @@ Implementar UserDetails no Modelo de User:
 Implementar a interface UserDetails no modelo de usuário é necessário para que o Spring Security possa interagir com
 os detalhes do usuário durante o processo de autenticação e autorização. A implementação da interface UserDetails
 fornece informações como nome de usuário, senha, autorizações e outras informações necessárias para o Spring Security.
+
+No service de autenticação, recebe-se as credenciais do usuário (login e senha) como entrada.
+Cria-se uma instância de UsernamePasswordAuthenticationToken com as credenciais.
+Utiliza-se o AuthenticationManager para autenticar as credenciais usando o método authenticate().
+Se a autenticação for bem-sucedida, o Authentication resultante contém informações do usuário autenticado.
+Gere um token JWT usando o TokenService que você criou. O token pode conter informações relevantes, como o nome de usuário e as permissões do usuário.
+Retorne o token JWT como resposta ao usuário.
+
+para gerar o JWT:
+1. criar o tokenService gerando o JWT
+2. manda para a função generate o user autenticado
+3. passa o token como string para um DTO
+4. retorna o DTO

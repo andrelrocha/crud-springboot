@@ -6,18 +6,26 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.user.AuthenticateDto;
+import rocha.andre.api.domain.user.User;
+import rocha.andre.api.infra.security.TokenJwtDto;
+import rocha.andre.api.infra.security.TokenService;
 
 @Component
 public class PerformLoginUseCase {
 
     @Autowired
     private AuthenticationManager manager;
+    @Autowired
+    TokenService tokenService;
 
-    public void performLogin(AuthenticateDto data) {
-        var token = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+    public TokenJwtDto performLogin(AuthenticateDto data) {
+        var authenticationToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         //está chamando authenticateService
-        Authentication authentication = manager.authenticate(token);
+        Authentication authentication = manager.authenticate(authenticationToken);
+        User userAuthenticated = (User) authentication.getPrincipal();
 
+        String tokenJwt = tokenService.generateJwtToken(userAuthenticated);
 
+        return new TokenJwtDto(tokenJwt);
     }
 }
