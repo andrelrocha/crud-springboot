@@ -14,6 +14,19 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String tokenJwt = getToken(request);
+
+        System.out.println(tokenJwt);
+
         filterChain.doFilter(request, response);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null) {
+            throw new RuntimeException("Token JWT not found in the request header");
+        }
+
+        return authorizationHeader.replace("Bearer ", "");
     }
 }
