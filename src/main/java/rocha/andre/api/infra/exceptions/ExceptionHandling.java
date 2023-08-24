@@ -1,4 +1,4 @@
-package rocha.andre.api.infra.errors;
+package rocha.andre.api.infra.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -7,10 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.security.PublicKey;
-
 @RestControllerAdvice
-public class ErrorHandling {
+public class ExceptionHandling {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity handleEntityNotFoundException() {
