@@ -11,7 +11,7 @@ import rocha.andre.api.domain.doctor.DoctorRepository;
 import rocha.andre.api.domain.patient.PatientRepository;
 
 @Service
-public class ScheduleAppointments {
+public class ScheduleAppointmentsUseCase {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
@@ -32,7 +32,7 @@ public class ScheduleAppointments {
             throw new ValidationException("doctor Id not found in our database.");
         }
 
-        var patient =  patientRepository.findById(data.patientId()).get();
+        var patient =  patientRepository.getReferenceById(data.patientId());
         var doctor = chooseDoctor(data);
 
         var appointment = new Appointment(null, doctor, patient, data.date());
@@ -43,6 +43,16 @@ public class ScheduleAppointments {
     }
 
     private Doctor chooseDoctor(AppointmentDto data) {
+        if (data.doctorId() != null) {
+            var doctor = doctorRepository.getReferenceById(data.doctorId());
+            return doctor;
+        }
+
+        if (data.specialty() == null) {
+            throw new ValidationException("Specialty not informed and no doctor was chosen.");
+        }
+
+        return doctorRepository.chooseRandomDoctorAvailableAtTheDate(data.specialty(), data.date());
 
     }
 }

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rocha.andre.api.domain.appointment.AppointmentDetaillingData;
 import rocha.andre.api.domain.appointment.AppointmentDto;
-import rocha.andre.api.domain.appointment.UseCase.ScheduleAppointments;
+import rocha.andre.api.domain.appointment.UseCase.ScheduleAppointmentsUseCase;
 
 @RestController
 @RequestMapping("/appointment")
 public class AppointmentController {
 
     @Autowired
-    private ScheduleAppointments scheduleAppointments;
+    private ScheduleAppointmentsUseCase scheduleAppointments;
 
     @PostMapping
     @Transactional
