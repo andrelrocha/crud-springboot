@@ -1,0 +1,23 @@
+package rocha.andre.api.controller;
+
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import rocha.andre.api.domain.appointment.AppointmentDetaillingData;
+import rocha.andre.api.domain.appointment.AppointmentDto;
+
+@RestController
+@RequestMapping("/appointment")
+public class AppointmentController {
+
+    @PostMapping
+    @Transactional
+    public ResponseEntity scheduleAppointment(@RequestBody @Valid AppointmentDto data) {
+        System.out.println(data);
+        return ResponseEntity.ok(new AppointmentDetaillingData(null, null, null, null));
+    }
+}
