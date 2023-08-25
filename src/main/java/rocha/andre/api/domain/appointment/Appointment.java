@@ -9,6 +9,7 @@ import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.patient.Patient;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Table(name = "appointments")
 @Entity(name = "Appointment")
@@ -30,5 +31,4 @@ public class Appointment {
     private Patient patient;
 
     private LocalDateTime date;
-
 }
