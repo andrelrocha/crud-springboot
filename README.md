@@ -4,7 +4,9 @@ Projeto de uma clínica médica fictícia que precisa de um aplicativo para gest
 
 ## Documentação API
 
-- http://localhost:8080/swagger-ui/index.html
+- Execute o projeto, rodando ApiApplication
+- Confira a interface visual da documentação em http://localhost:8080/swagger-ui/index.html
+- Confira o JSON da documentação em http://localhost:8080/v3/api-docs
 
 ---
 
