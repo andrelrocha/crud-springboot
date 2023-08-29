@@ -1,0 +1,1 @@
+alter table appointments add column cancelling_reason varchar(100);

@@ -4,12 +4,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rocha.andre.api.domain.appointment.AppointmentDetaillingData;
 import rocha.andre.api.domain.appointment.AppointmentDto;
+import rocha.andre.api.domain.appointment.DeleteAppointmentDto;
+import rocha.andre.api.domain.appointment.UseCase.CancelAppointmentUseCase;
 import rocha.andre.api.domain.appointment.UseCase.ScheduleAppointmentsUseCase;
 
 @RestController
@@ -18,11 +17,20 @@ public class AppointmentController {
 
     @Autowired
     private ScheduleAppointmentsUseCase scheduleAppointments;
+    @Autowired
+    private CancelAppointmentUseCase cancelAppointment;
 
     @PostMapping
     @Transactional
     public ResponseEntity scheduleAppointment(@RequestBody @Valid AppointmentDto data) {
         scheduleAppointments.schedule(data);
         return ResponseEntity.ok(new AppointmentDetaillingData(null, null, null, null));
+    }
+
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity cancelAppointment(@RequestBody @Valid DeleteAppointmentDto data) {
+        cancelAppointment.cancelAppointment(data);
+        return ResponseEntity.noContent().build();
     }
 }

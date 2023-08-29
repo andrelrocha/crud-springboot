@@ -35,7 +35,7 @@ public class ScheduleAppointmentsUseCase {
         var patient =  patientRepository.getReferenceById(data.patientId());
         var doctor = chooseDoctor(data);
 
-        var appointment = new Appointment(null, doctor, patient, data.date());
+        var appointment = new Appointment(null, doctor, patient, data.date(), null);
 
 
 
