@@ -37,8 +37,6 @@ public class ScheduleAppointmentsUseCase {
 
         var appointment = new Appointment(null, doctor, patient, data.date(), null);
 
-
-
         appointmentRepository.save(appointment);
     }
 
