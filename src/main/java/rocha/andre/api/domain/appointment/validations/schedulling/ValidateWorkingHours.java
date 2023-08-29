@@ -1,4 +1,4 @@
-package rocha.andre.api.domain.appointment.validations;
+package rocha.andre.api.domain.appointment.validations.schedulling;
 
 import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.ValidationException;

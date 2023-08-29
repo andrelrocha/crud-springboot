@@ -9,7 +9,6 @@ import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.patient.Patient;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Table(name = "appointments")
 @Entity(name = "Appointment")
@@ -34,9 +33,9 @@ public class Appointment {
 
     @Column(name = "cancelling_reason")
     @Enumerated(EnumType.STRING)
-    private DeleteAppointmentReason deleteAppointmentReason;
+    private CancelAppointmentReason cancelAppointmentReason;
 
-    public void cancel(DeleteAppointmentReason reason) {
-        this.deleteAppointmentReason = reason;
+    public void cancel(CancelAppointmentReason reason) {
+        this.cancelAppointmentReason = reason;
     }
 }

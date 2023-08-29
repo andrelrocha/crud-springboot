@@ -1,8 +1,6 @@
 package rocha.andre.api.infra.exceptions;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -70,12 +68,6 @@ public class ExceptionHandling {
             this(error.getField(), error.getDefaultMessage());
         }
 
-    }
-
-    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
-    public ResponseEntity handleInvalidDataAccessApiUsageException() {
-        System.out.println("acertei");
-        return ResponseEntity.ok("PELO AMOR DE DEUS NAO APARECE");
     }
 
     @ExceptionHandler(Exception.class)

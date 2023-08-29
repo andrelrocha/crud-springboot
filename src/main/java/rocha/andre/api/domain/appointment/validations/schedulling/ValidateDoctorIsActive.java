@@ -1,4 +1,4 @@
-package rocha.andre.api.domain.appointment.validations;
+package rocha.andre.api.domain.appointment.validations.schedulling;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

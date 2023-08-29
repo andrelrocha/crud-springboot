@@ -1,19 +1,28 @@
 package rocha.andre.api.domain.appointment.UseCase;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.appointment.AppointmentRepository;
-import rocha.andre.api.domain.appointment.DeleteAppointmentDto;
+import rocha.andre.api.domain.appointment.CancelAppointmentDto;
+import rocha.andre.api.domain.appointment.validations.cancelling.ValidatePreBookingCancelling;
 
-@Component
+
+@Service
 public class CancelAppointmentUseCase {
 
+    @Autowired
     private AppointmentRepository appointmentRepository;
 
-    public void cancelAppointment(DeleteAppointmentDto data) {
+    @Autowired
+    ValidatePreBookingCancelling validatePreBookingCancelling;
+
+    public void cancel(CancelAppointmentDto data) {
         if (!appointmentRepository.existsById(data.idAppointment())) {
             throw new ValidationException("Appointment ID not found in our database");
         }
+
+        validatePreBookingCancelling.validate(data);
 
         var appointment = appointmentRepository.getReferenceById(data.idAppointment());
         appointment.cancel(data.reason());

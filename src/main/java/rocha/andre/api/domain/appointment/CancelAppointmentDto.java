@@ -2,9 +2,9 @@ package rocha.andre.api.domain.appointment;
 
 import jakarta.validation.constraints.NotNull;
 
-public record DeleteAppointmentDto (
+public record CancelAppointmentDto(
         @NotNull
         Long idAppointment,
         @NotNull
-        DeleteAppointmentReason reason
+        CancelAppointmentReason reason
 ) {}

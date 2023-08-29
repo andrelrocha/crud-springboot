@@ -7,7 +7,7 @@ import rocha.andre.api.domain.appointment.Appointment;
 import rocha.andre.api.domain.appointment.AppointmentDetaillingData;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 import rocha.andre.api.domain.appointment.AppointmentRepository;
-import rocha.andre.api.domain.appointment.validations.ValidatorScheduleAppointments;
+import rocha.andre.api.domain.appointment.validations.schedulling.ValidatorScheduleAppointments;
 import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.doctor.DoctorRepository;
 import rocha.andre.api.domain.patient.PatientRepository;
