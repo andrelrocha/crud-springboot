@@ -13,11 +13,11 @@ public class ValidateDoctorIsActive implements ValidatorScheduleAppointments {
     private DoctorRepository doctorRepository;
 
     public void validate(AppointmentDto data) {
-        if (data.doctorId() == null) {
+        if (data.doctor_id() == null) {
             return;
         }
 
-        var doctorIsActive = doctorRepository.findActiveById(data.doctorId());
+        var doctorIsActive = doctorRepository.findActiveById(data.doctor_id());
 
         if (!doctorIsActive) {
             throw new ValidationException("You can't schedule appointments with doctors who've been deleted");

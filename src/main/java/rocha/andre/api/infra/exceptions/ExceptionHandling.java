@@ -1,6 +1,8 @@
 package rocha.andre.api.infra.exceptions;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -9,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import rocha.andre.api.domain.ValidationException;
 
 import javax.naming.AuthenticationException;
 import java.nio.file.AccessDeniedException;
@@ -52,19 +55,31 @@ public class ExceptionHandling {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
     }
 
-    @ExceptionHandler(RuntimeException.class) // Handle RuntimeException
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.status(500).body("Internal Server Error: " + ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity handleValidationException(ValidationException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     private record DataValidationError(String field, String message) {
         public DataValidationError(FieldError error) {
             this(error.getField(), error.getDefaultMessage());
         }
+
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity handleInvalidDataAccessApiUsageException() {
+        System.out.println("acertei");
+        return ResponseEntity.ok("PELO AMOR DE DEUS NAO APARECE");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity handleException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());
     }
 }

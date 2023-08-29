@@ -29,20 +29,23 @@ public class ScheduleAppointmentsUseCase {
     private List<ValidatorScheduleAppointments> validators;
 
     public AppointmentDetaillingData schedule(AppointmentDto data) {
-        boolean doctorExists = doctorRepository.existsById(data.doctorId());
-        boolean patientExists = patientRepository.existsById(data.patientId());
+        boolean patientExists = patientRepository.existsById(data.patient_id());
 
         if (!patientExists) {
             throw new ValidationException("patient Id not found in our database.");
         }
-        if(data.doctorId() != null && !doctorExists) {
+        if(data.doctor_id() != null && !doctorRepository.existsById(data.doctor_id())) {
             throw new ValidationException("doctor Id not found in our database.");
         }
 
         validators.forEach(validator -> validator.validate(data));
 
-        var patient =  patientRepository.getReferenceById(data.patientId());
+        var patient =  patientRepository.getReferenceById(data.patient_id());
         var doctor = chooseDoctor(data);
+
+        if (doctor == null) {
+            throw new ValidationException("No doctors are available for the requested date.");
+        }
 
         var appointment = new Appointment(null, doctor, patient, data.date(), null);
 
@@ -52,8 +55,8 @@ public class ScheduleAppointmentsUseCase {
     }
 
     private Doctor chooseDoctor(AppointmentDto data) {
-        if (data.doctorId() != null) {
-            var doctor = doctorRepository.getReferenceById(data.doctorId());
+        if (data.doctor_id() != null) {
+            var doctor = doctorRepository.getReferenceById(data.doctor_id());
             return doctor;
         }
 
@@ -62,6 +65,5 @@ public class ScheduleAppointmentsUseCase {
         }
 
         return doctorRepository.chooseRandomDoctorAvailableAtTheDate(data.specialty(), data.date());
-
     }
 }

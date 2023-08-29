@@ -13,7 +13,7 @@ public class ValidatePatientsIsActive implements ValidatorScheduleAppointments {
     private PatientRepository patientRepository;
 
     public void validate(AppointmentDto data) {
-        var patientIsActive = patientRepository.findActiveById(data.patientId());
+        var patientIsActive = patientRepository.findActiveById(data.patient_id());
 
         if (!patientIsActive) {
             throw new ValidationException("You cant schedule appointments after your account was deleted");

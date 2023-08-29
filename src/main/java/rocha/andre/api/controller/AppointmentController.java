@@ -22,8 +22,10 @@ public class AppointmentController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity scheduleAppointment(@RequestBody @Valid AppointmentDto data) {
+    public ResponseEntity scheduleAppointment(@RequestBody AppointmentDto data) {
+        System.out.println("aqui ta funcionando");
         var dto = scheduleAppointments.schedule(data);
+        System.out.println("aqui nao ta");
         return ResponseEntity.ok(dto);
     }
 

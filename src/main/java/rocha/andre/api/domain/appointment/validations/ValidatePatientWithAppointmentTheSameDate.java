@@ -16,7 +16,7 @@ public class ValidatePatientWithAppointmentTheSameDate implements ValidatorSched
         var firstHour = data.date().withHour(7);
         var lastHour = data.date().withHour(18);
 
-        var patientHasAnotherAppointmentWithinTheSameDay = appointmentRepository.existsByPatientIdAndDateBetween(data.patientId(), firstHour, lastHour);
+        var patientHasAnotherAppointmentWithinTheSameDay = appointmentRepository.existsByPatientIdAndDateBetween(data.patient_id(), firstHour, lastHour);
 
         if (patientHasAnotherAppointmentWithinTheSameDay) {
             throw new ValidationException("Patient already has another appointment in the same day.");
