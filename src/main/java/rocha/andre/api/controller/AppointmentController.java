@@ -23,8 +23,8 @@ public class AppointmentController {
     @PostMapping
     @Transactional
     public ResponseEntity scheduleAppointment(@RequestBody @Valid AppointmentDto data) {
-        scheduleAppointments.schedule(data);
-        return ResponseEntity.ok(new AppointmentDetaillingData(null, null, null, null));
+        var dto = scheduleAppointments.schedule(data);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping

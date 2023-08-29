@@ -12,7 +12,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("""
             select p.active from Patient p
             where
-            p.id = :patientId
+            p.id = :id
             """)
-    boolean findActiveById(Long patientId);
+    boolean findActiveById(Long id);
 }

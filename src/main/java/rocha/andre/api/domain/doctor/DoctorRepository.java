@@ -32,7 +32,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("""
             select d.active from Doctor d
             where
-            d.id = :doctorId
+            d.id = :id
             """)
-    boolean findActiveById(Long doctorId);
+    boolean findActiveById(Long id);
 }
