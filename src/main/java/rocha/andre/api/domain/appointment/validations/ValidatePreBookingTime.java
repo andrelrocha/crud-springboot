@@ -1,13 +1,15 @@
 package rocha.andre.api.domain.appointment.validations;
 
+import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class ValidatePreBookingTime {
-    public void validatePreBookingTime(AppointmentDto data) {
+@Component
+public class ValidatePreBookingTime implements ValidatorScheduleAppointments {
+    public void validate(AppointmentDto data) {
         var appointmentDate = data.date();
         var now = LocalDateTime.now();
         var preBookingTime = Duration.between(now, appointmentDate).toMinutes();

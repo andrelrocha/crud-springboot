@@ -1,13 +1,15 @@
 package rocha.andre.api.domain.appointment.validations;
 
+import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 
 import java.time.DayOfWeek;
 
-public class ValidateWorkingHours {
+@Component
+public class ValidateWorkingHours implements ValidatorScheduleAppointments {
 
-    public void validateWorkingHours(AppointmentDto data) {
+    public void validate(AppointmentDto data) {
         var appointmentDate = data.date();
 
         var sunday = appointmentDate.getDayOfWeek().equals(DayOfWeek.SUNDAY);
@@ -17,7 +19,5 @@ public class ValidateWorkingHours {
         if (sunday || beforeWorkingHours || afterWorkingHours) {
             throw new ValidationException("Appointment outside of the clinic's operating hours");
         }
-
-
     }
 }

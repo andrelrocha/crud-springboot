@@ -1,16 +1,18 @@
 package rocha.andre.api.domain.appointment.validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 import rocha.andre.api.domain.appointment.AppointmentRepository;
 
-public class ValidateDoctorAlreadyScheduled {
+@Component
+public class ValidateDoctorAlreadyScheduled implements ValidatorScheduleAppointments {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    public void validateDoctorAlreadyScheduled (AppointmentDto data) {
+    public void validate (AppointmentDto data) {
         var doctorIsAlreadyScheduled = appointmentRepository.existsByDoctorIdAndDate(data.doctorId(), data.date());
 
         if (doctorIsAlreadyScheduled) {

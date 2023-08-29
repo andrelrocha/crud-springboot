@@ -1,16 +1,18 @@
 package rocha.andre.api.domain.appointment.validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 import rocha.andre.api.domain.appointment.AppointmentRepository;
 
-public class ValidatePatientWithAppointmentTheSameDate {
+@Component
+public class ValidatePatientWithAppointmentTheSameDate implements ValidatorScheduleAppointments {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    public void validatePatientWithAppointmentTheSameDate(AppointmentDto data) {
+    public void validate(AppointmentDto data) {
         var firstHour = data.date().withHour(7);
         var lastHour = data.date().withHour(18);
 
