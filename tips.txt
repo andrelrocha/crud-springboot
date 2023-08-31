@@ -50,3 +50,6 @@ para gerar o JWT:
 CONTROLLER
 Ao chamar uma rota, recebe-se um dto com o nome dos parametros recebidos
 pela requisição e retorna outro dto gerado no useCase, nunca movimentando objetos puros
+
+@Activeprofiles
+- para mudar o application.properties a ser aplicado
