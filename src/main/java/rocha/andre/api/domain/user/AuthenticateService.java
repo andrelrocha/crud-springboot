@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticateService implements UserDetailsService {
-
-    //ou usa autowired, ou usa o construtor utilizado nos usecase
     @Autowired
     private UserRepository userRepository;
 

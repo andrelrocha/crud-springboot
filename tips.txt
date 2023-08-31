@@ -53,3 +53,14 @@ pela requisição e retorna outro dto gerado no useCase, nunca movimentando obje
 
 @Activeprofiles
 - para mudar o application.properties a ser aplicado
+
+
+RODANDO PROJETO APÓS O BUILD
+java -jar target/api-0.0.1-SNAPSHOT.jar
+
+-para escolher um application.properties
+java "-Dspring.profiles.active=prod" -jar target/api-0.0.1-SNAPSHOT.jar
+
+
+java "-Dspring.profiles.active=prod" "-DDATASOURCE_URL=jdbc:mysql://localhost/java_database"
+"-DDATASOURCE_USERNAME=andrerocha" "-DDATASOURCE_PASSWORD=senha123" -jar target/api-0.0.1-SNAPSHOT.jar

@@ -25,6 +25,11 @@ public class User implements UserDetails {
     private String login;
     private String password;
 
+    public User (UserDto data) {
+        this.login = data.login();
+        this.password = data.password();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
@@ -58,5 +63,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setPassword(String encodedPassword) {
+        this.password = encodedPassword;
     }
 }
