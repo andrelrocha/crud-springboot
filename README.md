@@ -12,10 +12,12 @@ Projeto de uma clínica médica fictícia que precisa de um aplicativo para gest
 
 ## ⚙️ Funcionalidades
 
-- [x] CRUD de médicos;
+- [x] CRUD de medicos;
 - [x] CRUD de pacientes;
 - [x] Agendamento de consultas;
 - [x] Cancelamento de consultas.
+- [x] Sistema de login e autenticação.
+- [x] Testes Automatizados.
 
 ---
 
