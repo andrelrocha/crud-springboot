@@ -1,5 +1,6 @@
 package rocha.andre.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/doctors")
+@SecurityRequirement(name = "bearer-key")
 public class DoctorController {
     @Autowired
     private CreateDoctorUseCase createDoctorUseCase;
