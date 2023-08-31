@@ -43,3 +43,10 @@ para gerar o JWT:
 2. manda para a função generate o user autenticado
 3. passa o token como string para um DTO
 4. retorna o DTO
+
+
+
+
+CONTROLLER
+Ao chamar uma rota, recebe-se um dto com o nome dos parametros recebidos
+pela requisição e retorna outro dto gerado no useCase, nunca movimentando objetos puros
