@@ -1,8 +1,8 @@
 em caso de migration com erro: delete from flyway_schema_history where success = 0;
 
 para criar o processo de security:
-1. criar service de autenticação
-2. criar rota de autenticação
+1. criar service de autenticação { authenticateService } - ele é quem procurará no db pelo login
+2. criar rota de autenticação { controller }
 3. criar security configurations {
  - definir authenticationManager
  - definir metodo de encriptação de senha

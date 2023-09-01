@@ -20,7 +20,7 @@ public class PerformLoginUseCase {
 
     public TokenJwtDto performLogin(UserDto data) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        System.out.println(authenticationToken);
+
         //está chamando authenticateService
         Authentication authentication = manager.authenticate(authenticationToken);
         User userAuthenticated = (User) authentication.getPrincipal();
