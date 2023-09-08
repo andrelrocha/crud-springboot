@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 import rocha.andre.api.domain.patient.Patient;
-import rocha.andre.api.domain.patient.PatientListingData;
-import rocha.andre.api.domain.patient.PatientRegistrationData;
-import rocha.andre.api.domain.patient.PatientUpdateData;
+import rocha.andre.api.domain.patient.PatientReturnDto;
+import rocha.andre.api.domain.patient.PatientDto;
+import rocha.andre.api.domain.patient.PatientUpdateDto;
 import rocha.andre.api.domain.patient.UseCase.*;
+import rocha.andre.api.service.PatientService;
 
 import java.net.URI;
 
@@ -23,47 +24,39 @@ import java.net.URI;
 @SecurityRequirement(name = "bearer-key")
 public class PatientController {
     @Autowired
-    private CreatePatientUseCase createPatientUseCase;
-    @Autowired
-    private DeletePatientUseCase deletePatientUseCase;
-    @Autowired
-    private ListPatientsUseCase listPatientsUseCase;
-    @Autowired
-    private ListPatientByIdUseCase listPatientByIdUseCase;
-    @Autowired
-    private UpdatePatientUseCase updatePatientUseCase;
+    private PatientService patientService;
 
     @GetMapping
-    public ResponseEntity<Page<PatientListingData>> getAllPatients(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
-        Page<PatientListingData> page = listPatientsUseCase.listDoctor(pagination);
+    public ResponseEntity<Page<PatientReturnDto>> getAllPatients(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
+        Page<PatientReturnDto> page = patientService.getAllPatients(pageable);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
-        Patient patientById = listPatientByIdUseCase.listPatientById(id);
+    public ResponseEntity<PatientReturnDto> getPatientById(@PathVariable Long id) {
+        PatientReturnDto patientById = patientService.getPatientById(id);
         return ResponseEntity.ok(patientById);
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Patient> createPatient(@RequestBody @Valid PatientRegistrationData data, UriComponentsBuilder uriBuilder) {
-        Patient newPatient = createPatientUseCase.createPatient(data);
-        URI uri = uriBuilder.path("/patients/{id}").buildAndExpand(newPatient.getId()).toUri();
+    public ResponseEntity<PatientReturnDto> createPatient(@RequestBody @Valid PatientDto data, UriComponentsBuilder uriBuilder) {
+        PatientReturnDto newPatient = patientService.createPatient(data);
+        URI uri = uriBuilder.path("/patients/{id}").buildAndExpand(newPatient.id()).toUri();
         return ResponseEntity.created(uri).body(newPatient);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Patient> updatePatient(@RequestBody @Valid PatientUpdateData data, @PathVariable Long id) {
-        Patient updatedPatient = updatePatientUseCase.updatePatient(data, id);
+    public ResponseEntity<PatientReturnDto> updatePatient(@RequestBody @Valid PatientUpdateDto data, @PathVariable Long id) {
+        PatientReturnDto updatedPatient = patientService.updatePatient(data, id);
         return ResponseEntity.ok(updatedPatient);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deletePatient(@PathVariable Long id) {
-        deletePatientUseCase.deletePatient(id);
+        patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
     }
 }

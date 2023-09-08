@@ -3,7 +3,8 @@ package rocha.andre.api.domain.patient.UseCase;
 import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.patient.Patient;
 import rocha.andre.api.domain.patient.PatientRepository;
-import rocha.andre.api.domain.patient.PatientUpdateData;
+import rocha.andre.api.domain.patient.PatientReturnDto;
+import rocha.andre.api.domain.patient.PatientUpdateDto;
 
 @Component
 public class UpdatePatientUseCase {
@@ -13,12 +14,12 @@ public class UpdatePatientUseCase {
         this.repository = repository;
     }
 
-    public Patient updatePatient(PatientUpdateData data, Long id) {
+    public PatientReturnDto updatePatient(PatientUpdateDto data, Long id) {
             Patient patientToUpdate = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Patient with the provided ID does not exist."));
 
             patientToUpdate.updateInformation(data);
 
-            return patientToUpdate;
+            return new PatientReturnDto(patientToUpdate);
     }
 }

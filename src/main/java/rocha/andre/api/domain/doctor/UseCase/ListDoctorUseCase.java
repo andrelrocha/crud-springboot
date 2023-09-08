@@ -14,11 +14,11 @@ public class ListDoctorUseCase {
         this.repository = repository;
     }
 
-    public Page<DoctorReturnDTO> listDoctor(Pageable pagination) {
+    public Page<DoctorReturnDTO> listDoctor(Pageable pageable) {
             // O método map() é uma operação do Stream que permite transformar cada elemento da sequência
             // em outro objeto usando uma função de mapeamento.
             //return repository.findAll(pagination).stream().map(DataListDoctor::new).toList();
 
-            return repository.findAllByActiveTrue(pagination).map(DoctorReturnDTO::new);
+            return repository.findAllByActiveTrue(pageable).map(DoctorReturnDTO::new);
     }
 }

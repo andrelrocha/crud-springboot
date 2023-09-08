@@ -7,17 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import rocha.andre.api.domain.address.DataAddress;
 
-public record PatientRegistrationData(@NotBlank
+public record PatientDto(@NotBlank
                                       String name,
-                                      @NotBlank
+                         @NotBlank
                                       @Email
                                       String email,
 
-                                      @NotBlank
+                         @NotBlank
                                       String telephone,
-                                      @NotBlank
+                         @NotBlank
                                       @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}")
                                       String cpf,
 
-                                      @NotNull @Valid DataAddress address) {
+                         @NotNull @Valid DataAddress address) {
 }

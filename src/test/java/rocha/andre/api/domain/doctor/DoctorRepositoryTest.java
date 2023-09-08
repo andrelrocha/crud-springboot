@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import rocha.andre.api.domain.address.DataAddress;
 import rocha.andre.api.domain.appointment.Appointment;
 import rocha.andre.api.domain.patient.Patient;
-import rocha.andre.api.domain.patient.PatientRegistrationData;
+import rocha.andre.api.domain.patient.PatientDto;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -92,8 +92,8 @@ class DoctorRepositoryTest {
         );
     }
 
-    private PatientRegistrationData patientData(String nome, String email, String cpf) {
-        return new PatientRegistrationData(
+    private PatientDto patientData(String nome, String email, String cpf) {
+        return new PatientDto(
                 nome,
                 email,
                 "61999999999",
