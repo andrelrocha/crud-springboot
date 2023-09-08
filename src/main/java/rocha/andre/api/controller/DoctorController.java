@@ -15,6 +15,7 @@ import rocha.andre.api.domain.doctor.DataListDoctor;
 import rocha.andre.api.domain.doctor.DataUpdateDoctor;
 import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.doctor.UseCase.*;
+import rocha.andre.api.service.DoctorService;
 
 import java.net.URI;
 
@@ -23,11 +24,12 @@ import java.net.URI;
 @SecurityRequirement(name = "bearer-key")
 public class DoctorController {
     @Autowired
+    private DoctorService doctorService;
+
+    @Autowired
     private CreateDoctorUseCase createDoctorUseCase;
     @Autowired
     private DeleteDoctorUseCase deleteDoctorUseCase;
-    @Autowired
-    private ListDoctorUseCase listDoctorUseCase;
     @Autowired
     private ListDoctorByIdUseCase listDoctorByIdUseCase;
     @Autowired
@@ -35,7 +37,7 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<Page<DataListDoctor>> getAllDoctors(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
-        Page<DataListDoctor> page = listDoctorUseCase.listDoctor(pagination);
+        Page<DataListDoctor> page = doctorService.getAllDoctors(pagination);
         return ResponseEntity.ok(page);
     }
 
@@ -47,9 +49,9 @@ public class DoctorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Doctor> createDoctor(@RequestBody @Valid DataDoctor data, UriComponentsBuilder uriBuilder) {
-        Doctor newDoctor = createDoctorUseCase.createDoctor(data);
-        URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(newDoctor.getId()).toUri();
+    public ResponseEntity<DataListDoctor> createDoctor(@RequestBody @Valid DataDoctor data, UriComponentsBuilder uriBuilder) {
+        DataListDoctor newDoctor = createDoctorUseCase.createDoctor(data);
+        URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(newDoctor.id()).toUri();
         return ResponseEntity.created(uri).body(newDoctor);
     }
 
