@@ -8,8 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 import rocha.andre.api.domain.appointment.CancelAppointmentDto;
-import rocha.andre.api.domain.appointment.UseCase.CancelAppointmentUseCase;
-import rocha.andre.api.domain.appointment.UseCase.ScheduleAppointmentsUseCase;
+import rocha.andre.api.service.AppointmentService;
 
 @RestController
 @RequestMapping("/appointment")
@@ -17,21 +16,19 @@ import rocha.andre.api.domain.appointment.UseCase.ScheduleAppointmentsUseCase;
 public class AppointmentController {
 
     @Autowired
-    private ScheduleAppointmentsUseCase scheduleAppointments;
-    @Autowired
-    private CancelAppointmentUseCase cancelAppointments;
+    private AppointmentService appointmentService;
 
     @PostMapping
     @Transactional
     public ResponseEntity scheduleAppointment(@RequestBody AppointmentDto data) {
-        var dto = scheduleAppointments.schedule(data);
+        var dto = appointmentService.scheduleAppointment(data);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping
     @Transactional
     public ResponseEntity cancelAppointment(@RequestBody @Valid CancelAppointmentDto data) {
-        cancelAppointments.cancel(data);
+        appointmentService.cancelAppointment(data);
         return ResponseEntity.noContent().build();
     }
 }

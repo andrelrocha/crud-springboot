@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.appointment.Appointment;
-import rocha.andre.api.domain.appointment.AppointmentDetaillingData;
+import rocha.andre.api.domain.appointment.AppointmentReturnDto;
 import rocha.andre.api.domain.appointment.AppointmentDto;
 import rocha.andre.api.domain.appointment.AppointmentRepository;
 import rocha.andre.api.domain.appointment.validations.schedulling.ValidatorScheduleAppointments;
@@ -28,7 +28,7 @@ public class ScheduleAppointmentsUseCase {
     @Autowired
     private List<ValidatorScheduleAppointments> validators;
 
-    public AppointmentDetaillingData schedule(AppointmentDto data) {
+    public AppointmentReturnDto schedule(AppointmentDto data) {
         boolean patientExists = patientRepository.existsById(data.patient_id());
 
         if (!patientExists) {
@@ -51,7 +51,7 @@ public class ScheduleAppointmentsUseCase {
 
         appointmentRepository.save(appointment);
 
-        return new AppointmentDetaillingData(appointment);
+        return new AppointmentReturnDto(appointment);
     }
 
     private Doctor chooseDoctor(AppointmentDto data) {

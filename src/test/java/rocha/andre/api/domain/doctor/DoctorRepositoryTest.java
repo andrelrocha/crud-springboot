@@ -1,6 +1,7 @@
 package rocha.andre.api.domain.doctor;
 
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ class DoctorRepositoryTest {
 
     @Test
     @DisplayName("It should return null when the only doctor in DB is not available")
-    void chooseRandomDoctorAvailableAtTheDateFirstScenario() {
+    void chooseRandomDoctorAvailableAtTheDateScenario1() {
         //given
         var nextMondayAt10 = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .atTime(10, 0);
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology);
+        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
         var patient = createPatient("patient", "patient@email.com", "00000000011");
         scheduleAppointment(doctor, patient, nextMondayAt10);
 
@@ -50,12 +51,12 @@ class DoctorRepositoryTest {
 
     @Test
     @DisplayName("It should return doctor when he's available")
-    void chooseRandomDoctorAvailableAtTheDateSecondScenario() {
+    void chooseRandomDoctorAvailableAtTheDateScenario2() {
         //given
         var nextMondayAt10 = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .atTime(10, 0);
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology);
+        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
 
         //when
         var doctorAvailable = doctorRepository.chooseRandomDoctorAvailableAtTheDate(Specialty.cardiology, nextMondayAt10);
@@ -64,15 +65,30 @@ class DoctorRepositoryTest {
         assertThat(doctorAvailable).isEqualTo(doctor);
     }
 
+    @Test
+    @DisplayName("It should return true doctor by id")
+    void findActiveByIdScenario1() {
+        //given
+        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
+
+        //when
+        var doctorActive = doctorRepository.findActiveById(doctor.getId());
+
+        //then
+        Assertions.assertTrue(doctorActive);
+    }
+
+
     ////////////////////
-    private DoctorDTO dataDoctor(String name, String email, String crm, Specialty specialty) {
+    private DoctorDTO dataDoctor(String name, String email, String crm, Specialty specialty, Boolean active) {
         return new DoctorDTO(
                 name,
                 email,
                 "61999999999",
                 crm,
                 specialty,
-                addressData()
+                addressData(),
+                active
         );
     }
 
@@ -102,8 +118,11 @@ class DoctorRepositoryTest {
         em.persist(new Appointment(null, doctor, patient, date, null));
     }
 
-    private Doctor createDoctor(String name, String email, String crm, Specialty specialty) {
-        var doctor = new Doctor(dataDoctor(name, email, crm, specialty));
+    private Doctor createDoctor(String name, String email, String crm, Specialty specialty, Boolean active) {
+        if (active == null) {
+            active = false;
+        }
+        var doctor = new Doctor(dataDoctor(name, email, crm, specialty, active));
         em.persist(doctor);
         return doctor;
     }

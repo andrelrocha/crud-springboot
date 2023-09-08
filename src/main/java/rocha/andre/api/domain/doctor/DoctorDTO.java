@@ -22,5 +22,6 @@ public record DoctorDTO(
         Specialty specialty,
         @NotNull
         @Valid
-        DataAddress address
+        DataAddress address,
+        Boolean active
 ) { }

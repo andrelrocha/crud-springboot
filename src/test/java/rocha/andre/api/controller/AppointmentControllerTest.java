@@ -10,19 +10,16 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import rocha.andre.api.domain.appointment.AppointmentDetaillingData;
+import rocha.andre.api.domain.appointment.AppointmentReturnDto;
 import rocha.andre.api.domain.appointment.AppointmentDto;
-import rocha.andre.api.domain.appointment.CancelAppointmentDto;
 import rocha.andre.api.domain.appointment.UseCase.ScheduleAppointmentsUseCase;
 import rocha.andre.api.domain.doctor.Specialty;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -39,7 +36,7 @@ class AppointmentControllerTest {
     private JacksonTester<AppointmentDto> dataAppointmentDtoJson;
 
     @Autowired
-    private JacksonTester<AppointmentDetaillingData> dataAppointmentReturnJson;
+    private JacksonTester<AppointmentReturnDto> dataAppointmentReturnJson;
 
     //cria um bean mocked para que nao seja efetuada a logica de negocio no use case, chamando repository
     @MockBean
@@ -72,7 +69,7 @@ class AppointmentControllerTest {
         var specialty = Specialty.cardiology;
 
         //informa ao mockito para quando o usecase for chamado, ele retorne o objeto enviado na requisição, independente de parametros
-        var dataDetailling = new AppointmentDetaillingData(null, 2l, 5l, date);
+        var dataDetailling = new AppointmentReturnDto(null, 2l, 5l, date);
         when(scheduleAppointmentsUseCase.schedule(any())).thenReturn(
                 dataDetailling);
 
