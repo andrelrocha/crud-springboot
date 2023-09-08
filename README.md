@@ -1,6 +1,6 @@
 ## 💻 Sobre o projeto
 
-Projeto de uma clínica médica fictícia que precisa de um aplicativo para gestão de consultas. O aplicativo deve possuir funcionalidades que permitam o cadastro de médicos e de pacientes, e também o agendamento e cancelamento de consultas.
+Projeto de uma clínica médica fictícia que precisa de um aplicativo para gestão de consultas. O aplicativo possui funcionalidades que permitem o cadastro de médicos e de pacientes, e também o agendamento e cancelamento de consultas.
 
 ## Documentação API
 
@@ -32,3 +32,4 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da API Rest do proj
 - **[Hibernate](https://hibernate.org)**
 - **[Flyway](https://flywaydb.org)**
 - **[Lombok](https://projectlombok.org)**
+- **[Mockito](https://site.mockito.org/)**
