@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import rocha.andre.api.domain.address.DataAddress;
 
-public record DataDoctor(
+public record DoctorDTO(
         @NotBlank
         String name,
         @NotBlank

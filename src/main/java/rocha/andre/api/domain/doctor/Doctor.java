@@ -29,7 +29,7 @@ public class Doctor {
 
     private Boolean active;
 
-    public Doctor (DataDoctor data) {
+    public Doctor (DoctorDTO data) {
         this.name = data.name();
         this.email = data.email();
         this.telephone = data.telephone();
@@ -39,7 +39,7 @@ public class Doctor {
         this.active = true;
     }
 
-    public void updateData(DataUpdateDoctor data) {
+    public void updateData(DoctorUpdateDTO data) {
         if (data.name() != null) {
             this.name = data.name();
         }

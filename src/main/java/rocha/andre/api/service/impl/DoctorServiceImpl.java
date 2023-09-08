@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
-import rocha.andre.api.domain.doctor.DataDoctor;
-import rocha.andre.api.domain.doctor.DataListDoctor;
-import rocha.andre.api.domain.doctor.DataUpdateDoctor;
-import rocha.andre.api.domain.doctor.Doctor;
+import rocha.andre.api.domain.doctor.DoctorDTO;
+import rocha.andre.api.domain.doctor.DoctorReturnDTO;
+import rocha.andre.api.domain.doctor.DoctorUpdateDTO;
 import rocha.andre.api.domain.doctor.UseCase.*;
 import rocha.andre.api.service.DoctorService;
 
@@ -26,29 +24,31 @@ public class DoctorServiceImpl implements DoctorService {
     private UpdateDoctorUseCase updateDoctorUseCase;
 
     @Override
-    public Page<DataListDoctor> getAllDoctors(Pageable pagination) {
+    public Page<DoctorReturnDTO> getAllDoctors(Pageable pagination) {
         var vendors = listDoctorUseCase.listDoctor(pagination);
         return vendors;
     }
 
     @Override
-    public Doctor getDoctorById(Long id) {
+    public DoctorReturnDTO getDoctorById(Long id) {
         var doctorById = listDoctorByIdUseCase.listDoctorById(id);
         return doctorById;
     }
 
     @Override
-    public DataListDoctor createDoctor(DataDoctor data, UriComponentsBuilder uriBuilder) {
-        return null;
+    public DoctorReturnDTO createDoctor(DoctorDTO data) {
+        var newDoctor = createDoctorUseCase.createDoctor(data);
+        return newDoctor;
     }
 
     @Override
-    public Doctor updateDoctor(DataUpdateDoctor data) {
-        return null;
+    public DoctorReturnDTO updateDoctor(DoctorUpdateDTO data) {
+        var doctorUpdated = updateDoctorUseCase.updateDoctor(data);
+        return doctorUpdated;
     }
 
     @Override
     public void deleteDoctor(Long id) {
-
+        deleteDoctorUseCase.deleteDoctor(id);
     }
 }

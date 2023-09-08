@@ -3,6 +3,7 @@ package rocha.andre.api.domain.doctor.UseCase;
 import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.doctor.DoctorRepository;
+import rocha.andre.api.domain.doctor.DoctorReturnDTO;
 
 
 @Component
@@ -13,11 +14,13 @@ public class ListDoctorByIdUseCase {
         this.repository = repository;
     }
 
-    public Doctor listDoctorById (Long id) {
+    public DoctorReturnDTO listDoctorById (Long id) {
+        Doctor doctorById = repository.getReferenceById(id);
 
-            Doctor doctorById = repository.getReferenceById(id);
-                    //.orElseThrow(() -> new IllegalArgumentException("Doctor with id " + id + " not found in our database"));
+        if (doctorById == null) {
+            throw new IllegalArgumentException("Doctor with id " + id + " not found in our database");
+        }
 
-            return doctorById;
+        return new DoctorReturnDTO(doctorById);
     }
 }

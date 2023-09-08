@@ -65,8 +65,8 @@ class DoctorRepositoryTest {
     }
 
     ////////////////////
-    private DataDoctor dataDoctor(String name, String email, String crm, Specialty specialty) {
-        return new DataDoctor(
+    private DoctorDTO dataDoctor(String name, String email, String crm, Specialty specialty) {
+        return new DoctorDTO(
                 name,
                 email,
                 "61999999999",

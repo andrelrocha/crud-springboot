@@ -2,16 +2,14 @@ package rocha.andre.api.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.util.UriComponentsBuilder;
-import rocha.andre.api.domain.doctor.DataDoctor;
-import rocha.andre.api.domain.doctor.DataListDoctor;
-import rocha.andre.api.domain.doctor.DataUpdateDoctor;
-import rocha.andre.api.domain.doctor.Doctor;
+import rocha.andre.api.domain.doctor.DoctorDTO;
+import rocha.andre.api.domain.doctor.DoctorReturnDTO;
+import rocha.andre.api.domain.doctor.DoctorUpdateDTO;
 
 public interface DoctorService {
-    public Page<DataListDoctor> getAllDoctors(Pageable pagination);
-    public Doctor getDoctorById(Long id);
-    public DataListDoctor createDoctor(DataDoctor data, UriComponentsBuilder uriBuilder);
-    public Doctor updateDoctor(DataUpdateDoctor data);
+    public Page<DoctorReturnDTO> getAllDoctors(Pageable pagination);
+    public DoctorReturnDTO getDoctorById(Long id);
+    public DoctorReturnDTO createDoctor(DoctorDTO data);
+    public DoctorReturnDTO updateDoctor(DoctorUpdateDTO data);
     public void deleteDoctor(Long id);
 }

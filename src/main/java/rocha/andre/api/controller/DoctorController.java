@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
-import rocha.andre.api.domain.doctor.DataDoctor;
-import rocha.andre.api.domain.doctor.DataListDoctor;
-import rocha.andre.api.domain.doctor.DataUpdateDoctor;
+import rocha.andre.api.domain.doctor.DoctorDTO;
+import rocha.andre.api.domain.doctor.DoctorReturnDTO;
+import rocha.andre.api.domain.doctor.DoctorUpdateDTO;
 import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.doctor.UseCase.*;
 import rocha.andre.api.service.DoctorService;
@@ -26,46 +26,37 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @Autowired
-    private CreateDoctorUseCase createDoctorUseCase;
-    @Autowired
-    private DeleteDoctorUseCase deleteDoctorUseCase;
-    @Autowired
-    private ListDoctorByIdUseCase listDoctorByIdUseCase;
-    @Autowired
-    private UpdateDoctorUseCase updateDoctorUseCase;
-
     @GetMapping
-    public ResponseEntity<Page<DataListDoctor>> getAllDoctors(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
-        Page<DataListDoctor> page = doctorService.getAllDoctors(pagination);
+    public ResponseEntity<Page<DoctorReturnDTO>> getAllDoctors(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination) {
+        Page<DoctorReturnDTO> page = doctorService.getAllDoctors(pagination);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
-        Doctor doctorById = listDoctorByIdUseCase.listDoctorById(id);
+    public ResponseEntity<DoctorReturnDTO> getDoctorById(@PathVariable Long id) {
+        DoctorReturnDTO doctorById = doctorService.getDoctorById(id);
         return ResponseEntity.ok(doctorById);
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DataListDoctor> createDoctor(@RequestBody @Valid DataDoctor data, UriComponentsBuilder uriBuilder) {
-        DataListDoctor newDoctor = createDoctorUseCase.createDoctor(data);
+    public ResponseEntity<DoctorReturnDTO> createDoctor(@RequestBody @Valid DoctorDTO data, UriComponentsBuilder uriBuilder) {
+        DoctorReturnDTO newDoctor = doctorService.createDoctor(data);
         URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(newDoctor.id()).toUri();
         return ResponseEntity.created(uri).body(newDoctor);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<Doctor> updateDoctor(@RequestBody @Valid DataUpdateDoctor data) {
-        Doctor updatedDoctor = updateDoctorUseCase.updateDoctor(data);
+    public ResponseEntity<DoctorReturnDTO> updateDoctor(@RequestBody @Valid DoctorUpdateDTO data) {
+        DoctorReturnDTO updatedDoctor = doctorService.updateDoctor(data);
         return ResponseEntity.ok(updatedDoctor);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteDoctor(@PathVariable Long id) {
-        deleteDoctorUseCase.deleteDoctor(id);
+        doctorService.deleteDoctor(id);
         return ResponseEntity.noContent().build();
     }
 }
