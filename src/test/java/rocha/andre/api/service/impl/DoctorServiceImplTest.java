@@ -50,12 +50,23 @@ class DoctorServiceImplTest {
         Pageable pageable = PageRequest.of(0, 10, descendingSortByEmail);
 
         //when
-        Page<DoctorReturnDTO> result = doctorService.getAllDoctors(pageable);
+        var result = doctorService.getAllDoctors(pageable);
 
         //then
         assertNotNull(result);
         assertTrue(result instanceof Page);
-        assertTrue(doctorRepository.findActiveById(doctor1.getId()));
+
+        boolean doctorFoundInResult = false;
+        for (DoctorReturnDTO d : result) {
+            if (d.id().equals(doctor1.getId()) &&
+                    d.name().equals(doctor1.getName()) &&
+                    d.email().equals(doctor1.getEmail()) &&
+                    d.crm().equals(doctor1.getCrm())) {
+                doctorFoundInResult = true;
+                break;
+            }
+        }
+        assertTrue(doctorFoundInResult);
     }
 
     @Test
@@ -84,6 +95,7 @@ class DoctorServiceImplTest {
     }
 
     @Test
+    @DisplayName("It should return all the info from the doctor, based on its id")
     void getDoctorById() {
         //given
         var doctor = createDoctor("user1", "email1@email.com", "123456", Specialty.cardiology, true);
@@ -97,6 +109,7 @@ class DoctorServiceImplTest {
     }
 
     @Test
+    @DisplayName("It should create a doctor entity on db")
     void createDoctor() {
         //given
         var doctor = dataDoctor("user1", "email1@email.com", "123456", Specialty.cardiology, true);
@@ -110,14 +123,15 @@ class DoctorServiceImplTest {
     }
 
     @Test
+    @DisplayName("It should update doctor's info based on its id and the UpdateDTO")
     void updateDoctor() throws IOException {
         //given
         var doctor = createDoctor("user1", "email1@email.com", "123456", Specialty.cardiology, true);
         var doctorSaved = doctorRepository.save(doctor);
+        var updatedName = "novo user100";
+        var doctorUpdateInfo = new DoctorUpdateDTO(doctorSaved.getId(), updatedName, "85999999999", addressData());
 
         //when
-        var updatedName = "novo user100"; // Novo nome após a atualização
-        var doctorUpdateInfo = new DoctorUpdateDTO(doctorSaved.getId(), updatedName, "85999999999", addressData());
         doctorService.updateDoctor(doctorUpdateInfo);
 
         var updatedDoctor = doctorRepository.findById(doctorSaved.getId()).orElse(null);
@@ -128,8 +142,8 @@ class DoctorServiceImplTest {
     }
 
 
-    //IT HASNT PASSED YET, MAYBE I NEED TO REFACTOR ITS USECASE
     @Test
+    @DisplayName("It should update doctor's active status to false, similarly to a soft delete")
     void deleteDoctor() {
         // given
         var doctor = createDoctor("user1", "email1@email.com", "123456", Specialty.cardiology, true);
@@ -138,8 +152,11 @@ class DoctorServiceImplTest {
         // when
         doctorService.deleteDoctor(doctorSaved.getId());
 
+        var deletedDoctor = doctorRepository.findById(doctorSaved.getId()).orElse(null);
+
         // then
-        assertFalse(doctorSaved.isActive());
+        assertNotNull(deletedDoctor);
+        assertFalse(deletedDoctor.getActive());
     }
 
 

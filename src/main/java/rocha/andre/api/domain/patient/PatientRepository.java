@@ -15,4 +15,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             p.id = :id
             """)
     boolean findActiveById(Long id);
+
+    Patient findByName(String name);
 }
