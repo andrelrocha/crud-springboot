@@ -16,6 +16,6 @@ public class DeletePatientUseCase {
             Patient patientToDelete = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Patient with the provided ID does not exist."));
 
-            patientToDelete.deactivate();
+            repository.delete(patientToDelete);
     }
 }

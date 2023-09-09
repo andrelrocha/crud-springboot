@@ -35,4 +35,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             d.id = :id and d.active = true
             """)
     boolean findActiveById(Long id);
+
+    Doctor findByName(String name);
 }

@@ -56,4 +56,9 @@ public class Doctor {
     public void exclude() {
         this.active = false;
     }
+
+    public Boolean isActive() {
+        if (this.active == true) { return true; }
+        else { return false; }
+    }
 }

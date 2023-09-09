@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rocha.andre.api.domain.patient.PatientDto;
 import rocha.andre.api.domain.patient.PatientReturnDto;
 import rocha.andre.api.domain.patient.PatientUpdateDto;
@@ -11,6 +12,7 @@ import rocha.andre.api.domain.patient.UseCase.*;
 import rocha.andre.api.service.PatientService;
 
 @Service
+@Transactional
 public class PatientServiceImpl implements PatientService {
     @Autowired
     private CreatePatientUseCase createPatientUseCase;
