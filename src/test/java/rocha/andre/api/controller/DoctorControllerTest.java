@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,17 +17,18 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import rocha.andre.api.domain.address.DataAddress;
-import rocha.andre.api.domain.doctor.Doctor;
-import rocha.andre.api.domain.doctor.DoctorDTO;
-import rocha.andre.api.domain.doctor.DoctorReturnDTO;
-import rocha.andre.api.domain.doctor.Specialty;
+import rocha.andre.api.domain.doctor.*;
+import rocha.andre.api.domain.doctor.UseCase.ListDoctorByIdUseCase;
 import rocha.andre.api.domain.patient.PatientDto;
+import rocha.andre.api.service.DoctorService;
 import rocha.andre.api.service.impl.DoctorServiceImpl;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,7 +48,10 @@ public class DoctorControllerTest {
     private JacksonTester<DoctorReturnDTO> doctorReturnDTOJacksonTester;
 
     @MockBean
-    private DoctorServiceImpl doctorService;
+    private DoctorService doctorService;
+    @MockBean
+    private DoctorRepository repository;
+
 
     Doctor doctor1;
     Doctor doctor2;
@@ -66,18 +71,46 @@ public class DoctorControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
     }
+
     @Test
     @DisplayName("It should return code 200 and a valid body")
     @WithMockUser
-    void getDoctorScenario1() throws Exception {
+    void getDoctorByIdScenario1() throws Exception {
+        //given
+        when(doctorService.getDoctorById(any())).thenReturn(new DoctorReturnDTO(doctor1));
+
+        //when
+        var response = mvc.perform(get("/doctors/1"))
+                .andReturn().getResponse();
+
+        var expectedJson = doctorReturnDTOJacksonTester.write(
+                new DoctorReturnDTO(doctor1)
+        ).getJson();
+
+        //then
+        assertEquals(expectedJson, response.getContentAsString());
+    }
+
+    @Test
+    @DisplayName("It should return code 200 and a valid body")
+    @WithMockUser
+    void getAllDoctorsScenario1() throws Exception {
+        //given
+        var newDoctorReturnDto = new DoctorReturnDTO(doctor1);
+        var newDoctorReturnDto2 = new DoctorReturnDTO(doctor2);
+        List<DoctorReturnDTO> doctorReturnDtoList = List.of(newDoctorReturnDto, newDoctorReturnDto2);
+        Page<DoctorReturnDTO> page = new PageImpl<>(doctorReturnDtoList);
+
+        when(doctorService.getAllDoctors(any())).thenReturn(page);
+
         //when
         var response = mvc.perform(get("/doctors"))
                 .andReturn().getResponse();
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertNotNull(response);
     }
-
 
     @Test
     @DisplayName("It should return code 400 when data provided for the api is invalid")
