@@ -57,11 +57,9 @@ public class AppointmentServiceImplTest {
         //given
         var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
         var patient = createPatient("patient", "patient@email.com", "00000000011");
-        var doctorSaved = doctorRepository.save(doctor);
-        var patientSaved = patientRepository.save(patient);
         var timeInTwoHours = LocalDateTime.now().plusHours(2);
 
-        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInTwoHours, Specialty.cardiology);
+        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTwoHours, Specialty.cardiology);
 
         //when
         var result = appointmentService.scheduleAppointment(scheduledAppointment);
@@ -69,8 +67,8 @@ public class AppointmentServiceImplTest {
         //then
         assertNotNull(result);
         assertTrue(result instanceof AppointmentReturnDto);
-        assertEquals(doctorSaved.getId(), result.doctor_id());
-        assertEquals(patientSaved.getId(), result.patient_id());
+        assertEquals(doctor.getId(), result.doctor_id());
+        assertEquals(patient.getId(), result.patient_id());
         assertEquals(timeInTwoHours, scheduledAppointment.date());
     }
 
@@ -81,18 +79,15 @@ public class AppointmentServiceImplTest {
         //given
         var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
         var patient = createPatient("patient", "patient@email.com", "00000000011");
-        var doctorSaved = doctorRepository.save(doctor);
-        var patientSaved = patientRepository.save(patient);
         var timeInTwentyMinutes = LocalDateTime.now().plusSeconds(1200);
 
-        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInTwentyMinutes, Specialty.cardiology);
-
+        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTwentyMinutes, Specialty.cardiology);
 
         //when / then
         assertThrows(ValidationException.class, () -> {
             appointmentService.scheduleAppointment(scheduledAppointment);
         });
-        assertNull(appointmentRepository.findByDoctorId(doctorSaved.getId()));
+        assertNull(appointmentRepository.findByDoctorId(doctor.getId()));
     }
 
     @Test
@@ -102,27 +97,23 @@ public class AppointmentServiceImplTest {
         var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
         var patient1 = createPatient("patient 1", "patient@email.com", "00000000011");
         var patient2 = createPatient("patient 2", "newpatient@email.com", "00000000022");
-        var doctorSaved = doctorRepository.save(doctor);
-        var patientSaved = patientRepository.save(patient1);
-        var patientSaved2 = patientRepository.save(patient2);
         var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         var timeInTheFuture = LocalDateTime.parse("30/09/2023 15:00", formatter);
 
-
-        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInTheFuture, null);
+        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient1.getId(), timeInTheFuture, null);
         var result = appointmentService.scheduleAppointment(scheduledAppointment);
 
-        var intendedAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved2.getId(), timeInTheFuture, null);
+        var intendedAppointment = new AppointmentDto(doctor.getId(), patient2.getId(), timeInTheFuture, null);
 
         //when / then
         assertTrue(result instanceof AppointmentReturnDto);
-        assertEquals(doctorSaved.getId(), result.doctor_id());
+        assertEquals(doctor.getId(), result.doctor_id());
 
         assertThrows(ValidationException.class, () -> {
             appointmentService.scheduleAppointment(intendedAppointment);
         });
 
-        long appointmentCount = appointmentRepository.countByDoctorId(doctorSaved.getId());
+        long appointmentCount = appointmentRepository.countByDoctorId(doctor.getId());
         assertEquals(1, appointmentCount);
     }
 
@@ -132,11 +123,9 @@ public class AppointmentServiceImplTest {
         //given
         var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
         var patient = createPatient("patient", "patient@email.com", "00000000011");
-        var doctorSaved = doctorRepository.save(doctor);
-        var patientSaved = patientRepository.save(patient);
         var timeInFiftyHours = LocalDateTime.now().plusHours(50);
 
-        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInFiftyHours, null);
+        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInFiftyHours, null);
         var result = appointmentService.scheduleAppointment(scheduledAppointment);
         var cancelAppointmentDto = new CancelAppointmentDto(result.id(), CancelAppointmentReason.DOCTOR_CANCELLED);
 
@@ -156,11 +145,9 @@ public class AppointmentServiceImplTest {
         //given
         var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
         var patient = createPatient("patient", "patient@email.com", "00000000011");
-        var doctorSaved = doctorRepository.save(doctor);
-        var patientSaved = patientRepository.save(patient);
         var timeInTwoHours = LocalDateTime.now().plusHours(2);
 
-        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInTwoHours, null);
+        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTwoHours, null);
         var result = appointmentService.scheduleAppointment(scheduledAppointment);
 
         var cancelAppointmentDto = new CancelAppointmentDto(result.id(), CancelAppointmentReason.DOCTOR_CANCELLED);
@@ -213,11 +200,13 @@ public class AppointmentServiceImplTest {
             active = false;
         }
         var doctor = new Doctor(dataDoctor(name, email, crm, specialty, active));
-        return doctor;
+        var savedDoctor = doctorRepository.save(doctor);
+        return savedDoctor;
     }
 
     private Patient createPatient(String name, String email, String cpf) {
         var patient = new Patient(patientData(name, email, cpf));
+        var savedPatient = patientRepository.save(patient);
         return patient;
     }
 }

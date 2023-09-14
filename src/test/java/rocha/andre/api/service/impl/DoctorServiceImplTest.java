@@ -1,5 +1,5 @@
 package rocha.andre.api.service.impl;
-;
+
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;

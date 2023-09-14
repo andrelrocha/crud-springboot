@@ -8,13 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import rocha.andre.api.domain.address.DataAddress;
-import rocha.andre.api.domain.doctor.DoctorReturnDTO;
-import rocha.andre.api.domain.doctor.DoctorUpdateDTO;
-import rocha.andre.api.domain.doctor.Specialty;
 import rocha.andre.api.domain.patient.*;
 
 import java.io.IOException;
