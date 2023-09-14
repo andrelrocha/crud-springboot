@@ -1,6 +1,4 @@
 teste para controller de doctor e patient
-teste para use impl service appointment
-
-- recuperação de senha
-- reset de senha
-- confirmação e validação email
+teste para use impl service
+service para appointment
+service para paciente
