@@ -1,6 +1,7 @@
 package rocha.andre.api.controller;
 
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,15 @@ public class DoctorControllerTest {
     @MockBean
     private DoctorServiceImpl doctorService;
 
+    Doctor doctor1;
+    Doctor doctor2;
+
+    @BeforeEach
+    void setUp() {
+        doctor1 = createDoctor("user1", "email1@email.com", "123456", Specialty.cardiology, true);
+        doctor2 = createDoctor("novo user", "novo-email@email.com", "654321", Specialty.cardiology, true);
+    }
+
 
     @Test
     @DisplayName("It should return code 403 when the route is called by a non logged user")
@@ -84,8 +94,7 @@ public class DoctorControllerTest {
     @WithMockUser
     void createDoctorScenario2() throws Exception {
         //given
-        var doctor = createDoctor("user1", "email1@email.com", "123456", Specialty.cardiology, true);
-        var doctorReturn = new DoctorReturnDTO(doctor);
+        var doctorReturn = new DoctorReturnDTO(doctor1);
         when(doctorService.createDoctor(any())).thenReturn(doctorReturn);
 
         //when

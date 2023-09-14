@@ -38,12 +38,18 @@ public class AppointmentServiceImplTest {
 
     AutoCloseable autoCloseable;
 
+    Doctor doctor;
+    Patient patient;
+
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         appointmentRepository.deleteAll();
         doctorRepository.deleteAll();
         patientRepository.deleteAll();
+
+        doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
+        patient = createPatient("patient", "patient@email.com", "00000000011");
     }
 
     @AfterEach
@@ -55,8 +61,6 @@ public class AppointmentServiceImplTest {
     @DisplayName("It should return a ScheduleAppointment Return DTO with valid info")
     void scheduleAppointmentScenario1() {
         //given
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
-        var patient = createPatient("patient", "patient@email.com", "00000000011");
         var timeInTwoHours = LocalDateTime.now().plusHours(2);
 
         var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTwoHours, Specialty.cardiology);
@@ -77,8 +81,6 @@ public class AppointmentServiceImplTest {
             "the intended scheduled appointment time")
     void scheduleAppointmentScenario2() {
         //given
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
-        var patient = createPatient("patient", "patient@email.com", "00000000011");
         var timeInTwentyMinutes = LocalDateTime.now().plusSeconds(1200);
 
         var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTwentyMinutes, Specialty.cardiology);
@@ -94,13 +96,11 @@ public class AppointmentServiceImplTest {
     @DisplayName("It should return a validation Exception regarding doctor already having an appointment at the request time")
     void scheduleAppointmentScenario3() {
         //given
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
-        var patient1 = createPatient("patient 1", "patient@email.com", "00000000011");
         var patient2 = createPatient("patient 2", "newpatient@email.com", "00000000022");
         var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         var timeInTheFuture = LocalDateTime.parse("30/09/2023 15:00", formatter);
 
-        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient1.getId(), timeInTheFuture, null);
+        var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTheFuture, null);
         var result = appointmentService.scheduleAppointment(scheduledAppointment);
 
         var intendedAppointment = new AppointmentDto(doctor.getId(), patient2.getId(), timeInTheFuture, null);
@@ -121,8 +121,6 @@ public class AppointmentServiceImplTest {
     @DisplayName("It should cancel the scheduled appointment, adding the cancel reason to the appointment register")
     void cancelAppointmentScenario1() {
         //given
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
-        var patient = createPatient("patient", "patient@email.com", "00000000011");
         var timeInFiftyHours = LocalDateTime.now().plusHours(50);
 
         var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInFiftyHours, null);
@@ -143,8 +141,6 @@ public class AppointmentServiceImplTest {
             "in under 24h before the scheduled time")
     void cancelAppointmentScenario2() {
         //given
-        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
-        var patient = createPatient("patient", "patient@email.com", "00000000011");
         var timeInTwoHours = LocalDateTime.now().plusHours(2);
 
         var scheduledAppointment = new AppointmentDto(doctor.getId(), patient.getId(), timeInTwoHours, null);
