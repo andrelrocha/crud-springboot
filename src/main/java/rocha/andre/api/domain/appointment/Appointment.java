@@ -35,6 +35,10 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private CancelAppointmentReason cancelAppointmentReason;
 
+    public CancelAppointmentReason getCancelAppointmentReason() {
+        return cancelAppointmentReason;
+    }
+
     public void cancel(CancelAppointmentReason reason) {
         this.cancelAppointmentReason = reason;
     }

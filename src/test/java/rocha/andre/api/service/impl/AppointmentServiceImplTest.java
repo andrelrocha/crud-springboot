@@ -8,10 +8,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.address.DataAddress;
-import rocha.andre.api.domain.appointment.Appointment;
-import rocha.andre.api.domain.appointment.AppointmentDto;
-import rocha.andre.api.domain.appointment.AppointmentRepository;
-import rocha.andre.api.domain.appointment.AppointmentReturnDto;
+import rocha.andre.api.domain.appointment.*;
 import rocha.andre.api.domain.doctor.Doctor;
 import rocha.andre.api.domain.doctor.DoctorDTO;
 import rocha.andre.api.domain.doctor.DoctorRepository;
@@ -130,7 +127,51 @@ public class AppointmentServiceImplTest {
     }
 
     @Test
-    @DisplayName("It should cancel the scheduled appointment, ")
+    @DisplayName("It should cancel the scheduled appointment, adding the cancel reason to the appointment register")
+    void cancelAppointmentScenario1() {
+        //given
+        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
+        var patient = createPatient("patient", "patient@email.com", "00000000011");
+        var doctorSaved = doctorRepository.save(doctor);
+        var patientSaved = patientRepository.save(patient);
+        var timeInFiftyHours = LocalDateTime.now().plusHours(50);
+
+        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInFiftyHours, null);
+        var result = appointmentService.scheduleAppointment(scheduledAppointment);
+        var cancelAppointmentDto = new CancelAppointmentDto(result.id(), CancelAppointmentReason.DOCTOR_CANCELLED);
+
+        //when
+        appointmentService.cancelAppointment(cancelAppointmentDto);
+
+        //then
+        var appointmentInDb = appointmentRepository.findByDoctorId(result.doctor_id());
+        assertNotNull(appointmentInDb.getCancelAppointmentReason());
+        assertEquals(CancelAppointmentReason.DOCTOR_CANCELLED, appointmentInDb.getCancelAppointmentReason());
+    }
+
+    @Test
+    @DisplayName("It shouldn't cancel the scheduled appointment, throwing a exception for trying to cancel an appointment" +
+            "in under 24h before the scheduled time")
+    void cancelAppointmentScenario2() {
+        //given
+        var doctor = createDoctor("doctor", "doctor@email.com", "123456", Specialty.cardiology, true);
+        var patient = createPatient("patient", "patient@email.com", "00000000011");
+        var doctorSaved = doctorRepository.save(doctor);
+        var patientSaved = patientRepository.save(patient);
+        var timeInTwoHours = LocalDateTime.now().plusHours(2);
+
+        var scheduledAppointment = new AppointmentDto(doctorSaved.getId(), patientSaved.getId(), timeInTwoHours, null);
+        var result = appointmentService.scheduleAppointment(scheduledAppointment);
+
+        var cancelAppointmentDto = new CancelAppointmentDto(result.id(), CancelAppointmentReason.DOCTOR_CANCELLED);
+
+        //when / then
+        assertThrows(ValidationException.class, () -> {
+            appointmentService.cancelAppointment(cancelAppointmentDto);
+        });
+        var appointmentInDb = appointmentRepository.findByDoctorId(result.doctor_id());
+        assertNull(appointmentInDb.getCancelAppointmentReason());
+    }
 
     ////////////////////
     private DoctorDTO dataDoctor(String name, String email, String crm, Specialty specialty, Boolean active) {
