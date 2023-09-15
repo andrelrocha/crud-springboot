@@ -29,10 +29,6 @@ public class Doctor {
 
     private Boolean active;
 
-    //SET EXCLUSIVO PARA TESTES
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Doctor (DoctorDTO data) {
         this.name = data.name();

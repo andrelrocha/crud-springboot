@@ -72,10 +72,42 @@ class AppointmentRepositoryTest {
     }
 
     @Test
-    void existsByPatientIdAndDateBetween() {
+    @DisplayName("It should return true, since the patient has an appointment scheduled for the requested period")
+    void existsByPatientIdAndDateBetweenScenario1() {
+        //given
+        var doctor = createDoctor("doctor", "firstdoctoremail@email.com", "654321", Specialty.cardiology, true);
+        var patient = createPatient("patient", "nevercreated@email.com", "00000022011");
+        var nextMondayAt10 = LocalDate.now()
+                .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+                .atTime(10, 0);
+        scheduleAppointment(doctor, patient, nextMondayAt10.minusHours(2));
+        var now = LocalDateTime.now();
 
+        //when
+        var patientWithAnAppointmentAtTheRequestedPeriod = appointmentRepository.existsByPatientIdAndDateBetween(patient.getId(), now, nextMondayAt10);
+
+        //then
+        assertTrue(patientWithAnAppointmentAtTheRequestedPeriod);
     }
 
+    @Test
+    @DisplayName("It should return false, since the patient hasn't an appointment scheduled for the requested period")
+    void existsByPatientIdAndDateBetweenScenario2() {
+        //given
+        var doctor = createDoctor("doctor", "firstdoctoremail@email.com", "654321", Specialty.cardiology, true);
+        var patient = createPatient("patient", "nevercreated@email.com", "00000022011");
+        var nextMondayAt10 = LocalDate.now()
+                .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+                .atTime(10, 0);
+        scheduleAppointment(doctor, patient, nextMondayAt10.plusHours(2));
+        var now = LocalDateTime.now();
+
+        //when
+        var patientWithAnAppointmentAtTheRequestedPeriod = appointmentRepository.existsByPatientIdAndDateBetween(patient.getId(), now, nextMondayAt10);
+
+        //then
+        assertFalse(patientWithAnAppointmentAtTheRequestedPeriod);
+    }
 
     ////////////////////
     private DoctorDTO dataDoctor(String name, String email, String crm, Specialty specialty, Boolean active) {
