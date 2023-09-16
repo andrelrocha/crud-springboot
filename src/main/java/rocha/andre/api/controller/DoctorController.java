@@ -13,8 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import rocha.andre.api.domain.doctor.DoctorDTO;
 import rocha.andre.api.domain.doctor.DoctorReturnDTO;
 import rocha.andre.api.domain.doctor.DoctorUpdateDTO;
-import rocha.andre.api.domain.doctor.Doctor;
-import rocha.andre.api.domain.doctor.UseCase.*;
 import rocha.andre.api.service.DoctorService;
 
 import java.net.URI;

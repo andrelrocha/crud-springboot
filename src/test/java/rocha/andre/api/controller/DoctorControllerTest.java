@@ -16,8 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.address.DataAddress;
 import rocha.andre.api.domain.doctor.*;
+import rocha.andre.api.domain.doctor.UseCase.DeleteDoctorUseCase;
 import rocha.andre.api.domain.doctor.UseCase.ListDoctorByIdUseCase;
 import rocha.andre.api.domain.patient.PatientDto;
 import rocha.andre.api.service.DoctorService;
@@ -31,8 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,9 +45,11 @@ public class DoctorControllerTest {
 
     @Autowired
     private JacksonTester<DoctorDTO> doctorDTOJacksonTester;
-
     @Autowired
     private JacksonTester<DoctorReturnDTO> doctorReturnDTOJacksonTester;
+    @Autowired
+    private JacksonTester<DoctorUpdateDTO> doctorUpdateDTOJacksonTester;
+
 
     @MockBean
     private DoctorService doctorService;
@@ -144,7 +148,71 @@ public class DoctorControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
     }
 
+    @Test
+    @DisplayName("It should return code 200 when data provided for the api is valid, and the data in the response should" +
+            "match the provided for the route api")
+    @WithMockUser
+    void updateDoctorScenario1() throws Exception {
+        //given
+        var updateInfo = new DoctorUpdateDTO(1l, "novo nome", "61999999999", addressData());
+        doctor1.updateData(updateInfo);
+        var doctorReturn = new DoctorReturnDTO(doctor1);
+        when(doctorService.updateDoctor(any())).thenReturn(
+                doctorReturn
+        );
 
+        var doctorExpected = doctorReturnDTOJacksonTester.write(doctorReturn).getJson();
+
+        //when
+        var response = mvc.perform(
+                        put("/doctors")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(doctorUpdateDTOJacksonTester.write(
+                                        new DoctorUpdateDTO(1l, "novo nome", "61999999999", addressData())
+                                ).getJson())
+                )
+                .andReturn().getResponse();
+
+        //then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(doctorExpected);
+    }
+
+    @Test
+    @DisplayName("It should return an error 400 when the request has no body with valid data")
+    @WithMockUser
+    void updateDoctorScenario2() throws Exception {
+        //given
+        String emptyJson = "{}";
+
+        //when
+        var response = mvc.perform(
+                        put("/doctors")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(emptyJson)
+                )
+                .andReturn().getResponse();
+
+        //then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("It should return code 204 when the correct requested doctor_id is provided")
+    @WithMockUser
+    void deleteDoctorScenario1() throws Exception {
+        ///given
+        doctor1.setId(1l);
+
+        //when
+        var response = mvc.perform(
+                        delete("/doctors/" + doctor1.getId())
+                )
+                .andReturn().getResponse();
+
+        //then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 
     ////////////////////
     private DoctorDTO dataDoctor(String name, String email, String crm, Specialty specialty, Boolean active) {

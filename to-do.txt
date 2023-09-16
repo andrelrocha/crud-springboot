@@ -1,0 +1,14 @@
+i. sistema de recuperação de senha:
+ - enviar token por email
+ - rota para reset vai receber o token no body, conferindo validade do expireDate e do token
+ - token e password
+ - nao esquecer de gerar a nova senha no mesmo algoritmo criptográfico
+ - migration de add token reset e expireDate à users
+
+ ii. sistema de validação na criação de senha:
+ - enviar email
+
+ iii. rota para exclusão de user
+ - deve receber o token enviado por email para confirmar o delete
+
+ iv. subir para AWS

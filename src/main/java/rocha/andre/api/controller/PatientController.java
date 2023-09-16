@@ -10,11 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
-import rocha.andre.api.domain.patient.Patient;
 import rocha.andre.api.domain.patient.PatientReturnDto;
 import rocha.andre.api.domain.patient.PatientDto;
 import rocha.andre.api.domain.patient.PatientUpdateDto;
-import rocha.andre.api.domain.patient.UseCase.*;
 import rocha.andre.api.service.PatientService;
 
 import java.net.URI;

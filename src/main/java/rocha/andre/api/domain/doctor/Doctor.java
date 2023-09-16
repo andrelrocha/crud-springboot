@@ -62,4 +62,10 @@ public class Doctor {
         if (this.active == true) { return true; }
         else { return false; }
     }
+
+    //somente para testes, JPA e EM não deixam setar id gerenciado pelo banco de dados
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }
