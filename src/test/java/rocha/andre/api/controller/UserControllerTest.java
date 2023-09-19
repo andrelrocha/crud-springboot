@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import rocha.andre.api.domain.user.UseCase.CreateUserUseCase;
 import rocha.andre.api.domain.user.UseCase.PerformLoginUseCase;
 import rocha.andre.api.domain.user.User;
-import rocha.andre.api.domain.user.UserDto;
-import rocha.andre.api.domain.user.UserReturnDto;
+import rocha.andre.api.domain.user.UserDTO;
+import rocha.andre.api.domain.user.UserReturnDTO;
 import rocha.andre.api.infra.security.TokenJwtDto;
 import rocha.andre.api.infra.security.TokenService;
 
@@ -35,9 +35,9 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
     @Autowired
-    private JacksonTester<UserDto> userDtoJacksonTester;
+    private JacksonTester<UserDTO> userDtoJacksonTester;
     @Autowired
-    private JacksonTester<UserReturnDto> userDtoReturnJacksonTester;
+    private JacksonTester<UserReturnDTO> userDtoReturnJacksonTester;
 
     @MockBean
     private CreateUserUseCase createUserUseCase;
@@ -51,7 +51,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("It should return code 200 after creating a user, and return its info")
     void createUserScenario1() throws Exception {
-        UserReturnDto expectedUserDtoReturn = new UserReturnDto(1L, "andre@email.com");
+        UserReturnDTO expectedUserDtoReturn = new UserReturnDTO(1L, "andre@email.com");
         when(createUserUseCase.createUser(any()))
                 .thenReturn(expectedUserDtoReturn);
 
@@ -59,7 +59,7 @@ public class UserControllerTest {
                         post("/login/create")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(userDtoJacksonTester.write(
-                                                new UserDto("andre@email.com", "123")
+                                                new UserDTO("andre@email.com", "123")
                                         ).getJson()
                                 ))
                 .andReturn()
@@ -88,7 +88,7 @@ public class UserControllerTest {
                         post("/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(userDtoJacksonTester.write(
-                                                new UserDto("andre@email.com", "123")
+                                                new UserDTO("andre@email.com", "123")
                                         ).getJson()
                                 ))
                 .andReturn()
@@ -117,7 +117,7 @@ public class UserControllerTest {
                         post("/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(userDtoJacksonTester.write(
-                                                new UserDto("andre@email.com", "123")
+                                                new UserDTO("andre@email.com", "123")
                                         ).getJson()
                                 ))
                 .andReturn()

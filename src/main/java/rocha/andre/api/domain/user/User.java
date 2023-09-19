@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +26,13 @@ public class User implements UserDetails {
     private String login;
     private String password;
 
-    public User (UserDto data) {
+    @Column(name = "token_mail")
+    private String tokenMail;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "token_expiration")
+    private LocalDateTime tokenExpiration;
+
+    public User (UserDTO data) {
         this.login = data.login();
         this.password = data.password();
     }
@@ -67,5 +74,10 @@ public class User implements UserDetails {
 
     public void setPassword(String encodedPassword) {
         this.password = encodedPassword;
+    }
+
+    public void forgotPassword(UserForgotDTO data) {
+        this.tokenMail = data.tokenMail();
+        this.tokenExpiration = data.tokenExpiration();
     }
 }
