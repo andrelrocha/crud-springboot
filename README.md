@@ -1,6 +1,6 @@
 ## 💻 Sobre o projeto
 
-Projeto de uma clínica médica fictícia que precisa de um aplicativo para gestão de consultas. O aplicativo possui funcionalidades que permitem o cadastro de médicos e de pacientes, e também o agendamento e cancelamento de consultas.
+Projeto de  clínica médica fictícia que precisa de um aplicativo para gestão de consultas. O aplicativo possui funcionalidades que permitem o cadastro de médicos e de pacientes, e também o agendamento e cancelamento de consultas.
 
 ## Documentação API
 
@@ -15,8 +15,9 @@ Projeto de uma clínica médica fictícia que precisa de um aplicativo para gest
 - [x] CRUD de medicos;
 - [x] CRUD de pacientes;
 - [x] Agendamento de consultas;
-- [x] Cancelamento de consultas.
-- [x] Sistema de login e autenticação.
+- [x] Cancelamento de consultas;
+- [x] Sistema de login e autenticação;
+- [x] Sistema de recuperação de senha;
 - [x] Testes Automatizados.
 
 ---
