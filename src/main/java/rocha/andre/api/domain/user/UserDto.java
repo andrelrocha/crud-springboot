@@ -2,7 +2,7 @@ package rocha.andre.api.domain.user;
 
 import jakarta.validation.constraints.NotNull;
 
-public record UserDTO(
+public record UserDto(
         @NotNull
         String login,
         @NotNull

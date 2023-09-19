@@ -32,7 +32,7 @@ public class User implements UserDetails {
     @Column(name = "token_expiration")
     private LocalDateTime tokenExpiration;
 
-    public User (UserDTO data) {
+    public User (UserDto data) {
         this.login = data.login();
         this.password = data.password();
     }

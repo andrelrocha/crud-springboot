@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import rocha.andre.api.domain.user.UserDTO;
+import rocha.andre.api.domain.user.UserDto;
 import rocha.andre.api.domain.user.UserLoginDTO;
-import rocha.andre.api.domain.user.UserReturnDTO;
+import rocha.andre.api.domain.user.UserResetPassDTO;
+import rocha.andre.api.domain.user.UserReturnDto;
 import rocha.andre.api.infra.security.TokenJwtDto;
 import rocha.andre.api.service.UserService;
 
@@ -24,15 +25,15 @@ public class UserController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity performLogin(@RequestBody @Valid UserDTO data) {
+    public ResponseEntity performLogin(@RequestBody @Valid UserDto data) {
         TokenJwtDto tokenJwt = userService.performLogin(data);
         return ResponseEntity.ok(tokenJwt);
     }
 
     @PostMapping("/create")
     @Transactional
-    public ResponseEntity createUser(@RequestBody @Valid UserDTO data) {
-        UserReturnDTO newUser = userService.createUser(data);
+    public ResponseEntity createUser(@RequestBody @Valid UserDto data) {
+        UserReturnDto newUser = userService.createUser(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
@@ -43,4 +44,10 @@ public class UserController {
         return ResponseEntity.ok(stringSuccess);
     }
 
+    @PostMapping("/reset_password")
+    @Transactional
+    public ResponseEntity resetPassword(@RequestBody UserResetPassDTO data) {
+        var stringSuccess= userService.resetPassword(data);
+        return ResponseEntity.ok(stringSuccess);
+    }
 }

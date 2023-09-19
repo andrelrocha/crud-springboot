@@ -1,9 +1,9 @@
 package rocha.andre.api.domain.user;
 
-public record UserReturnDTO(Long id,
+public record UserReturnDto(Long id,
                             String login) {
 
-    public UserReturnDTO(User user) {
+    public UserReturnDto(User user) {
         this(user.getId(), user.getLogin());
     }
 }

@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 import rocha.andre.api.domain.user.UseCase.CreateUserUseCase;
 import rocha.andre.api.domain.user.UseCase.ForgotPasswordUseCase;
 import rocha.andre.api.domain.user.UseCase.PerformLoginUseCase;
-import rocha.andre.api.domain.user.UserDTO;
+import rocha.andre.api.domain.user.UseCase.ResetPasswordUseCase;
+import rocha.andre.api.domain.user.UserDto;
 import rocha.andre.api.domain.user.UserLoginDTO;
 import rocha.andre.api.domain.user.UserResetPassDTO;
-import rocha.andre.api.domain.user.UserReturnDTO;
+import rocha.andre.api.domain.user.UserReturnDto;
 import rocha.andre.api.infra.security.TokenJwtDto;
 import rocha.andre.api.service.UserService;
 
@@ -19,18 +20,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CreateUserUseCase createUserUseCase;
     @Autowired
+    private ForgotPasswordUseCase forgotPasswordUseCase;
+    @Autowired
     private PerformLoginUseCase performLoginUseCase;
     @Autowired
-    private ForgotPasswordUseCase forgotPasswordUseCase;
+    private ResetPasswordUseCase resetPasswordUseCase;
 
     @Override
-    public TokenJwtDto performLogin(UserDTO data) {
+    public TokenJwtDto performLogin(UserDto data) {
         var tokenJwt = performLoginUseCase.performLogin(data);
         return tokenJwt;
     }
 
     @Override
-    public UserReturnDTO createUser(UserDTO data) {
+    public UserReturnDto createUser(UserDto data) {
         var user = createUserUseCase.createUser(data);
         return user;
     }
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String resetPassword(UserResetPassDTO data) {
-        return null;
+        resetPasswordUseCase.resetPassword(data);
+        return "Email successfully updated!";
     }
 }

@@ -14,7 +14,7 @@ public class CreateUserUseCase {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserReturnDTO createUser(UserDTO data) {
+    public UserReturnDto createUser(UserDto data) {
         boolean userExists = userRepository.userExistsByLogin(data.login());
 
         if (userExists) {
@@ -28,6 +28,6 @@ public class CreateUserUseCase {
 
         userRepository.save(newUser);
 
-        return new UserReturnDTO(newUser);
+        return new UserReturnDto(newUser);
     }
 }
