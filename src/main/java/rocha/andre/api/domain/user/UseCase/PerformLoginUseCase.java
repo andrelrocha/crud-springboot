@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.user.UserDto;
 import rocha.andre.api.domain.user.User;
+import rocha.andre.api.domain.user.UserRepository;
 import rocha.andre.api.infra.security.TokenJwtDto;
 import rocha.andre.api.infra.security.TokenService;
 

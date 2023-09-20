@@ -76,6 +76,7 @@ public class User implements UserDetails {
         this.password = encodedPassword;
     }
 
+
     public void forgotPassword(UserForgotDTO data) {
         this.tokenMail = data.tokenMail();
         this.tokenExpiration = data.tokenExpiration();
