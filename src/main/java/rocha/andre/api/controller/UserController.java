@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import rocha.andre.api.domain.user.UserDto;
-import rocha.andre.api.domain.user.UserLoginDTO;
-import rocha.andre.api.domain.user.UserResetPassDTO;
-import rocha.andre.api.domain.user.UserReturnDto;
+import rocha.andre.api.domain.user.*;
 import rocha.andre.api.infra.security.TokenJwtDto;
 import rocha.andre.api.service.UserService;
 
@@ -34,7 +31,8 @@ public class UserController {
     @Transactional
     public ResponseEntity createUser(@RequestBody @Valid UserDto data) {
         UserReturnDto newUser = userService.createUser(data);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+        var responseObj = new UserCreationResponseController(newUser, "pending email confirmation");
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseObj);
     }
 
     @PostMapping("/forgot_password")
@@ -50,4 +48,6 @@ public class UserController {
         var stringSuccess= userService.resetPassword(data);
         return ResponseEntity.ok(stringSuccess);
     }
+
+    ///ROTA POST A SER ACESSADA COM O TOKEN DE CONFIRMAÇÃO
 }

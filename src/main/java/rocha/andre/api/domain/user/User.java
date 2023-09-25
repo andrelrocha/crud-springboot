@@ -31,6 +31,9 @@ public class User implements UserDetails {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "token_expiration")
     private LocalDateTime tokenExpiration;
+    @Column(name = "token_confirmation")
+    private String tokenConfirmation;
+    private boolean validated;
 
     public User (UserDto data) {
         this.login = data.login();
@@ -74,6 +77,10 @@ public class User implements UserDetails {
 
     public void setPassword(String encodedPassword) {
         this.password = encodedPassword;
+    }
+
+    public void setMailTokenConfirmation(String token) {
+        this.tokenConfirmation = token;
     }
 
 

@@ -5,6 +5,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.user.*;
+import rocha.andre.api.infra.utils.mail.GenerateMailToken;
+import rocha.andre.api.infra.utils.mail.MailDTO;
+import rocha.andre.api.infra.utils.mail.MailSenderMime;
 
 @Component
 public class CreateUserUseCase {
@@ -13,6 +16,11 @@ public class CreateUserUseCase {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private MailSenderMime mailSender;
+    @Autowired
+    private GenerateMailToken mailToken;
 
     public UserReturnDto createUser(UserDto data) {
         boolean userExists = userRepository.userExistsByLogin(data.login());
@@ -26,8 +34,16 @@ public class CreateUserUseCase {
         String encodedPassword = bCryptPasswordEncoder.encode(data.password());
         newUser.setPassword(encodedPassword);
 
-        userRepository.save(newUser);
+        var userOnDb = userRepository.save(newUser);
 
-        return new UserReturnDto(newUser);
+        var token = mailToken.generateEmailToken();
+        userOnDb.setMailTokenConfirmation(token);
+
+        var subject = "Validate email";
+        var mailDTO = new MailDTO(subject, userOnDb.getLogin(), token);
+
+        mailSender.sendMail(mailDTO);
+
+        return new UserReturnDto(userOnDb);
     }
 }

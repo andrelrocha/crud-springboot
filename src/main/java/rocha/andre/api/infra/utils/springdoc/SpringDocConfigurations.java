@@ -1,4 +1,4 @@
-package rocha.andre.api.infra.springdoc;
+package rocha.andre.api.infra.utils.springdoc;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
