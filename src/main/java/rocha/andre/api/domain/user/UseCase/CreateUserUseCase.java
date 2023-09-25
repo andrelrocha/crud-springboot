@@ -9,6 +9,8 @@ import rocha.andre.api.infra.utils.mail.GenerateMailToken;
 import rocha.andre.api.infra.utils.mail.MailDTO;
 import rocha.andre.api.infra.utils.mail.MailSenderMime;
 
+import java.time.LocalDateTime;
+
 @Component
 public class CreateUserUseCase {
     @Autowired
@@ -36,8 +38,11 @@ public class CreateUserUseCase {
 
         var userOnDb = userRepository.save(newUser);
 
+        var oneHour = LocalDateTime.now().plusHours(1);
         var token = mailToken.generateEmailToken();
+
         userOnDb.setMailTokenConfirmation(token);
+        userOnDb.setTokenExpiration(oneHour);
 
         var subject = "Validate email";
         var mailDTO = new MailDTO(subject, userOnDb.getLogin(), token);

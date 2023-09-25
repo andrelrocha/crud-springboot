@@ -28,13 +28,10 @@ public class PerformLoginUseCase {
         Authentication authentication = manager.authenticate(authenticationToken);
         User userAuthenticated = (User) authentication.getPrincipal();
 
-        //CONFERE SE ELE ESTÁ COM EMAIL
-        /*
+        var validated = userAuthenticated.isValidated();
         if(!validated) {
             throw new ValidationException("Your email hasn't been validated yet, check your email inbox");
         }
-
-         */
 
         String tokenJwt = tokenService.generateJwtToken(userAuthenticated);
 

@@ -6,6 +6,8 @@ import rocha.andre.api.domain.ValidationException;
 import rocha.andre.api.domain.user.UserRepository;
 import rocha.andre.api.domain.user.UserValidateEmail;
 
+import java.time.LocalDateTime;
+
 @Component
 public class ValidateEmailUseCase {
     @Autowired
@@ -19,8 +21,12 @@ public class ValidateEmailUseCase {
         }
 
         var tokenExpected = user.getTokenConfirmation();
+        var tokenExpiration = user.getTokenExpiration();
+        var now = LocalDateTime.now();
 
-        if (tokenExpected.equals(data.tokenConfirmation())) {
+        var tokenIsValid = tokenExpected.equals(data.tokenConfirmation()) && now.isBefore(tokenExpiration);
+
+        if (tokenIsValid) {
             user.setValidated();
         } else {
             throw new ValidationException("Your token is not valid");

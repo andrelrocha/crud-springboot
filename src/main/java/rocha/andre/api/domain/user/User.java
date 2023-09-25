@@ -75,6 +75,10 @@ public class User implements UserDetails {
         return true;
     }
 
+    public boolean isValidated() {
+        return validated;
+    }
+
     public void setPassword(String encodedPassword) {
         this.password = encodedPassword;
     }
@@ -90,5 +94,9 @@ public class User implements UserDetails {
     public void forgotPassword(UserForgotDTO data) {
         this.tokenMail = data.tokenMail();
         this.tokenExpiration = data.tokenExpiration();
+    }
+
+    public void setTokenExpiration(LocalDateTime time) {
+        this.tokenExpiration = time;
     }
 }
