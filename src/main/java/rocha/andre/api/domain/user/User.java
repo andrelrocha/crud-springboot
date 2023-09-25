@@ -82,6 +82,9 @@ public class User implements UserDetails {
     public void setMailTokenConfirmation(String token) {
         this.tokenConfirmation = token;
     }
+    public void setValidated() {
+        this.validated = true;
+    }
 
 
     public void forgotPassword(UserForgotDTO data) {

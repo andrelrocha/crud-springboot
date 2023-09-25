@@ -3,14 +3,8 @@ package rocha.andre.api.service.impl;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rocha.andre.api.domain.user.UseCase.CreateUserUseCase;
-import rocha.andre.api.domain.user.UseCase.ForgotPasswordUseCase;
-import rocha.andre.api.domain.user.UseCase.PerformLoginUseCase;
-import rocha.andre.api.domain.user.UseCase.ResetPasswordUseCase;
-import rocha.andre.api.domain.user.UserDto;
-import rocha.andre.api.domain.user.UserLoginDTO;
-import rocha.andre.api.domain.user.UserResetPassDTO;
-import rocha.andre.api.domain.user.UserReturnDto;
+import rocha.andre.api.domain.user.*;
+import rocha.andre.api.domain.user.UseCase.*;
 import rocha.andre.api.infra.security.TokenJwtDto;
 import rocha.andre.api.service.UserService;
 
@@ -25,6 +19,8 @@ public class UserServiceImpl implements UserService {
     private PerformLoginUseCase performLoginUseCase;
     @Autowired
     private ResetPasswordUseCase resetPasswordUseCase;
+    @Autowired
+    private ValidateEmailUseCase validateEmailUseCase;
 
     @Override
     public TokenJwtDto performLogin(UserDto data) {
@@ -47,6 +43,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public String resetPassword(UserResetPassDTO data) {
         resetPasswordUseCase.resetPassword(data);
-        return "Email successfully updated!";
+        return "Password successfully updated!";
+    }
+
+    @Override
+    public String validateEmail(UserValidateEmail data) {
+        validateEmailUseCase.validateEmail(data);
+        return "Email successfully validated!";
     }
 }

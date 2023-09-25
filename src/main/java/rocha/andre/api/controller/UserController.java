@@ -49,5 +49,10 @@ public class UserController {
         return ResponseEntity.ok(stringSuccess);
     }
 
-    ///ROTA POST A SER ACESSADA COM O TOKEN DE CONFIRMAÇÃO
+    @PostMapping("/validate_email")
+    @Transactional
+    public ResponseEntity validateEmail(@RequestBody UserValidateEmail data) {
+        var stringSuccess = userService.validateEmail(data);
+        return ResponseEntity.ok(stringSuccess);
+    }
 }
